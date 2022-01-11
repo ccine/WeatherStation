@@ -1,37 +1,33 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>MVC Web application</title>
+    <title>Weather Station Monitor</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 
 <body>
-<h1>People list</h1>
+<h1 style="text-align:center;">Weather Station Monitor</h1>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>show</th>
-        <th>edit</th>
-        <th>delete</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="person: ${people}">
-        <td th:text="${person.id}"> <b>10 </b></td>
-        <td th:text="${person.firstName}"> John </td>
-        <td th:text="${person.lastName}"> Smith </td>
-        <td> <a href="show?id=10" th:href="@{show(id=${person.id})}"> show </a></td>
-        <td> <a href="edit?id=10" th:href="@{edit(id=${person.id})}"> edit </a></td>
-        <td> <a href="delete?id=10" th:href="@{delete(id=${person.id})}"> delete </a></td>
-    </tr>
-    </tbody>
-</table>
+<div>
+    <h2 style="text-align:center;">Station battery and generators</h2>
+    <h3 th:text="${'Battery Level: ' + station?.batteryLevel + '%'}">Battery Level: Unknown</h3>
+    <h3 th:text="${'Generators Status: ' + (station?.isCharging ? 'open and charging the station' : 'closed cause extreme weather conditions') }">Generators Status: Unknown</h3>
+</div>
 
-<a href="input"> Add new person </a>
+<div class="form-floating">
+    <textarea class="form-control" placeholder="Output of server" id="textarea" style="height: 100px"></textarea>
+    <label for="textarea">Output</label>
+</div>
+
+
+<a href="incwind"><button type="button" class="btn btn-primary"> Increase wind speed </button></a><br>
+<a href="decwind"> Decrease wind speed </a><br>
+<a href="inctemperature"> Increase temperature </a><br>
+<a href="dectemperature"> Decrease temperature </a><br>
+<a href="incbattery"> Increase battery level </a><br>
+<a href="decbattery"> Decrease battery level </a><br>
 
 </body>
 </html>

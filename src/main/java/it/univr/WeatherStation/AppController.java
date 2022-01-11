@@ -1,25 +1,80 @@
 package it.univr.WeatherStation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.LinkedList;
+import it.univr.WeatherStation.Station;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class AppController {
 
-    /*@Autowired
-    private PersonRepository repository;*/
+    private Sensor windSensor = new Sensor(0);
+    private Sensor temperatureSensor = new Sensor(19);
+    private Battery batteryLevel = new Battery(30);
+    private Station weatherStation = new Station(windSensor, temperatureSensor, new Sensor(50), new Sensor(50000), batteryLevel);
+
 
     @RequestMapping("/")
-    public String index(){
+    public String home(Model model){
+        model.addAttribute("station", weatherStation);
         return "home";
     }
+
+    @RequestMapping("/incwind")
+    public String incwind(){ //TODO: extend Sensor
+        int tmp = windSensor.getValue()+50;
+        if(tmp>100)
+            tmp-=50;
+        windSensor.setValue(tmp);
+        return "redirect:/";
+    }
+
+    @RequestMapping("/decwind")
+    public String decwind(){ //TODO: extend Sensor
+        int tmp = windSensor.getValue()-50;
+        if(tmp<0)
+            tmp=0;
+        windSensor.setValue(tmp);
+        return "redirect:/";
+    }
+
+    @RequestMapping("/inctemperature")
+    public String inctemperature(){ //TODO: extend Sensor
+        int tmp = temperatureSensor.getValue()+10;
+        if(tmp>40)
+            tmp=40;
+        temperatureSensor.setValue(tmp);
+        return "redirect:/";
+    }
+
+    @RequestMapping("/dectemperature")
+    public String dectemperature(){ //TODO: extend Sensor
+        int tmp = temperatureSensor.getValue()-10;
+        if(tmp<-20)
+            tmp=-20;
+        temperatureSensor.setValue(tmp);
+        return "redirect:/";
+    }
+
+
+    @RequestMapping("/incbattery")
+    public String incbattery(){
+        batteryLevel.setLevel(batteryLevel.getLevel()+10);
+        return "redirect:/";
+    }
+
+    @RequestMapping("/decbattery")
+    public String decbattery(){
+        batteryLevel.setLevel(batteryLevel.getLevel()-10);
+        return "redirect:/";
+    }
+
 
     /*@RequestMapping("/list")
     public String list(Model model){
@@ -29,11 +84,6 @@ public class AppController {
         }
         model.addAttribute("people", data);
         return "list";
-    }
-
-    @RequestMapping("/input")
-    public String input(){
-        return "input";
     }
 
     @RequestMapping("/create")
