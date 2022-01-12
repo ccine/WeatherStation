@@ -10,24 +10,52 @@
 <body>
 <h1 style="text-align:center;">Weather Station Monitor</h1>
 
-<div>
-    <h2 style="text-align:center;">Station battery and generators</h2>
-    <h3 th:text="${'Battery Level: ' + station?.batteryLevel + '%'}">Battery Level: Unknown</h3>
-    <h3 th:text="${'Generators Status: ' + (station?.isCharging ? 'open and charging the station' : 'closed cause extreme weather conditions') }">Generators Status: Unknown</h3>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2 style="text-align:center;">Station Status</h2>
+            <h3 th:text="${'Battery Level: ' + station?.batteryLevel + '%'}">Battery Level: Unknown</h3>
+            <h3 th:text="${'Generators Status: ' + (station?.isCharging ? 'open and charging the station' : 'closed cause extreme weather conditions') }">Generators Status: Unknown</h3>
+            <!--<h3 th:text="${'Accesa: ' + station?.isRunning}">Accesa: Unknown</h3>-->
+        </div>
+        <div class="col">
+            <h2 style="text-align:center;">Test Buttons</h2>
+            <div class="container">
+                <div class="row gx-1">
+                    <div class="col" style="text-align:right;">
+                        <a href="incwind"><button type="button" class="btn btn-primary">Increase wind speed (+50km/h)</button></a>
+                    </div>
+                    <div class="col">
+                        <a href="decwind"><button type="button" class="btn btn-danger">Decrease wind speed (-50km/h)</button></a>
+                    </div>
+                </div>
+                <div class="row gx-1">
+                    <div class="col" style="text-align:right;">
+                        <a href="inctemperature"><button type="button" class="btn btn-primary">Increase temperature (+10°C)</button></a>
+                    </div>
+                    <div class="col">
+                        <a href="dectemperature"><button type="button" class="btn btn-danger">Decrease temperature (-10°C)</button></a>
+                    </div>
+                </div>
+                <div class="row gx-1">
+                    <div class="col" style="text-align:right;">
+                        <a href="incbattery"><button type="button" class="btn btn-primary">Increase battery level (+10%)</button></a>
+                    </div>
+                    <div class="col">
+                        <a href="decbattery"><button type="button" class="btn btn-danger">Decrease battery level (-10%)</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h2 style="text-align:center;">Server Output</h2>
+            <textarea class="form-control" placeholder="Output of server" id="textarea" style="height: 100px" disabled readonly></textarea>
+        </div>
+    </div>
 </div>
 
-<div class="form-floating">
-    <textarea class="form-control" placeholder="Output of server" id="textarea" style="height: 100px"></textarea>
-    <label for="textarea">Output</label>
-</div>
-
-
-<a href="incwind"><button type="button" class="btn btn-primary"> Increase wind speed </button></a><br>
-<a href="decwind"> Decrease wind speed </a><br>
-<a href="inctemperature"> Increase temperature </a><br>
-<a href="dectemperature"> Decrease temperature </a><br>
-<a href="incbattery"> Increase battery level </a><br>
-<a href="decbattery"> Decrease battery level </a><br>
 
 </body>
 </html>
