@@ -10,8 +10,8 @@
 <body>
 <h1 style="text-align:center;">Weather Station Monitor</h1>
 
-<div class="container">
-    <div class="row">
+<div class="container mt-5">
+    <div class="row my-5">
         <div class="col">
             <h2 style="text-align:center;">Station Status</h2>
             <h3 th:text="${'Battery Level: ' + station?.batteryLevel + '%'}">Battery Level: Unknown</h3>
@@ -21,28 +21,24 @@
         <div class="col">
             <h2 style="text-align:center;">Test Buttons</h2>
             <div class="container">
-                <div class="row gx-1">
-                    <div class="col" style="text-align:right;">
-                        <a href="incwind"><button type="button" class="btn btn-primary">Increase wind speed (+50km/h)</button></a>
+                <div class="row g-2">
+                    <div class="col-6" style="text-align:right;">
+                        <a href="incwind"><button type="button" class="btn btn-primary w-100">Increase wind speed (+50km/h)</button></a>
                     </div>
-                    <div class="col">
-                        <a href="decwind"><button type="button" class="btn btn-danger">Decrease wind speed (-50km/h)</button></a>
+                    <div class="col-6">
+                        <a href="decwind"><button type="button" class="btn btn-danger w-100">Decrease wind speed (-50km/h)</button></a>
                     </div>
-                </div>
-                <div class="row gx-1">
-                    <div class="col" style="text-align:right;">
-                        <a href="inctemperature"><button type="button" class="btn btn-primary">Increase temperature (+10°C)</button></a>
+                    <div class="col-6" style="text-align:right;">
+                        <a href="inctemperature"><button type="button" class="btn btn-primary w-100">Increase temperature (+10°C)</button></a>
                     </div>
-                    <div class="col">
-                        <a href="dectemperature"><button type="button" class="btn btn-danger">Decrease temperature (-10°C)</button></a>
+                    <div class="col-6">
+                        <a href="dectemperature"><button type="button" class="btn btn-danger w-100">Decrease temperature (-10°C)</button></a>
                     </div>
-                </div>
-                <div class="row gx-1">
-                    <div class="col" style="text-align:right;">
-                        <a href="incbattery"><button type="button" class="btn btn-primary">Increase battery level (+10%)</button></a>
+                    <div class="col-6">
+                        <a href="incbattery"><button type="button" class="btn btn-primary w-100">Increase battery level (+10%)</button></a>
                     </div>
-                    <div class="col">
-                        <a href="decbattery"><button type="button" class="btn btn-danger">Decrease battery level (-10%)</button></a>
+                    <div class="col-6">
+                        <a href="decbattery"><button type="button" class="btn btn-danger w-100">Decrease battery level (-10%)</button></a>
                     </div>
                 </div>
             </div>
@@ -55,7 +51,6 @@
         </div>
     </div>
 </div>
-
 
 </body>
 </html>
