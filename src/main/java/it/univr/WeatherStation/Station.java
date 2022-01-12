@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Station extends Thread{
 
-    private Battery batteryLevel;  // TODO: Possibilità di fare oggetto a parte (mock)
+    private Sensor batteryLevel;
     private Sensor windSensor;
     private Sensor temperatureSensor;
     private Sensor humiditySensor;
@@ -13,21 +13,19 @@ public class Station extends Thread{
     private Generator solarPanel;
     private Generator windTurbine;
     private boolean energySaving;
+    private Server dataServer;
+    private Server maintenanceServer;
     private List<String> errors;
 
 
-    /**
-     * @param windSensor
-     * @param temperatureSensor
-     * @param humiditySensor
-     * @param lightSensor
-     */
-    public Station(Sensor windSensor, Sensor temperatureSensor, Sensor humiditySensor, Sensor lightSensor, Battery batteryLevel) {
+    public Station(Sensor windSensor, Sensor temperatureSensor, Sensor humiditySensor, Sensor lightSensor, Battery batteryLevel, Server dataServer, Server maintenanceServer) {
         this.windSensor = windSensor;
         this.temperatureSensor = temperatureSensor;
         this.humiditySensor = humiditySensor;
         this.lightSensor = lightSensor;
         this.batteryLevel = batteryLevel;
+        this.dataServer = dataServer;
+        this.maintenanceServer = maintenanceServer;
 
         solarPanel = new Generator(true);
         windTurbine = new Generator(true);
@@ -38,21 +36,16 @@ public class Station extends Thread{
     }
 
     public void sendData(){
-        System.out.println("readSensorsData()");
+        dataServer.sendData(readSensorsData());
     }
 
-    /*public JSONObject readSensorsData(){
-        JSONObject obj = new JSONObject();
-        /*obj.put("wind", windSensor.getValue() + " km/h");
-        obj.put("temperature", temperatureSensor.getValue() + " °C");
-        obj.put("humidity", humiditySensor.getValue() + "%");
-        obj.put("light", lightSensor.getValue() + " lm");*/
-        /*return obj;
-
-    }*/
+    public String readSensorsData(){
+        // TODO: Aggiungi dati sensori
+        return "a";
+    }
 
     public void extremeWeatherConditions(){
-        if(windSensor.getValue() > 40 || temperatureSensor.getValue() < -10){ // TODO: VALORI DA SISTEMARE
+        if(windSensor.getValue() > 40 || temperatureSensor.getValue() < -10){
             solarPanel.setOpen(false);
             windTurbine.setOpen(false);
         } else {
@@ -70,22 +63,32 @@ public class Station extends Thread{
     }
 
     public void sendState(){
-        System.out.println();
+        maintenanceServer.sendData(getStationState());
     }
 
     public void checkBattery(){
-        if(batteryLevel.getLevel() < 20){
+        if(batteryLevel.getValue() < 20){
             energySaving = true;
             sendState();
-            if(batteryLevel.getLevel() < 2){
-                sendState(); // TODO: da modificare state o metodo
-                // TODO: exit(1)
+            if(batteryLevel.getValue() < 2){
+                sendState();
+                stopStation();
             }
         }
     }
 
-    public void waitServer(){
+    private void stopStation() {
+        interrupt();
+    }
 
+    public void waitDataServer(){
+        if (dataServer.isWaiting())
+            sendData();
+    }
+
+    public void waitMaintenanceServer(){
+        if (maintenanceServer.isWaiting())
+            sendState();
     }
 
     @Override
@@ -93,6 +96,8 @@ public class Station extends Thread{
         while (true) {
             if (!energySaving) {
                 // TODO: aaaa
+                waitDataServer();
+                waitMaintenanceServer();
                 checkAndSendErrors();
             }
             checkBattery();
@@ -106,11 +111,19 @@ public class Station extends Thread{
     }
 
     public int getBatteryLevel() {
-        return batteryLevel.getLevel();
+        return batteryLevel.getValue();
     }
 
     public boolean isCharging(){
         return windTurbine.isOpen() || solarPanel.isOpen();
+    }
+
+    private String getStationState(){
+        return "Station:"
+                + "\nbatteryLevel: " + getBatteryLevel()
+                + "\nisRunning: " + !isInterrupted()
+                + "\nisCharging: " + isCharging()
+                + "\nenergySaving: " + isEnergySaving();
     }
 }
 
