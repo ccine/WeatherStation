@@ -11,7 +11,7 @@ public class Server {
     }
 
     public void sendData(String data){
-        receivedData.concat(data + "\n");
+        receivedData += data + "\n";
         isWaiting = false;
     }
 

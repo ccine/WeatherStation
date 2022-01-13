@@ -24,7 +24,8 @@ public class AppController {
 
     @RequestMapping("/")
     public String home(Model model){
-        model.addAttribute("station", weatherStation);
+        model.addAttribute("serverdata", dataServer.getReceivedData());
+        model.addAttribute("serverstate", maintenanceServer.getReceivedData());
         return "home";
     }
 
@@ -66,13 +67,15 @@ public class AppController {
     }
 
     @RequestMapping("/getdata")
-    public void getdata(){
+    public String getdata(){
         dataServer.setWaiting(true);
+        return "redirect:/";
     }
 
-    @RequestMapping("/getstatus")
-    public void getstatus(){
+    @RequestMapping("/getstate")
+    public String getstate(){
         maintenanceServer.setWaiting(true);
+        return "redirect:/";
     }
 
 
