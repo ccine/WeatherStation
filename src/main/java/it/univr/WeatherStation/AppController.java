@@ -65,6 +65,16 @@ public class AppController {
         return "redirect:/";
     }
 
+    @RequestMapping("/getdata")
+    public void getdata(){
+        dataServer.setWaiting(true);
+    }
+
+    @RequestMapping("/getstatus")
+    public void getstatus(){
+        maintenanceServer.setWaiting(true);
+    }
+
 
     /*@RequestMapping("/list")
     public String list(Model model){

@@ -12,6 +12,7 @@ public class Server {
 
     public void sendData(String data){
         receivedData.concat(data + "\n");
+        isWaiting = false;
     }
 
     public boolean isWaiting() {
@@ -20,6 +21,10 @@ public class Server {
 
     public String getReceivedData() {
         return receivedData;
+    }
+
+    public void setWaiting(boolean waiting) {
+        isWaiting = waiting;
     }
 
 }
