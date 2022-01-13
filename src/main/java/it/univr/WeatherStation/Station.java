@@ -7,7 +7,7 @@ import java.util.List;
 public class Station extends Thread{
 
     private int id;
-    private Sensor batteryLevel;
+    private Battery batteryLevel;
     private Sensor windSensor;
     private Sensor temperatureSensor;
     private Sensor humiditySensor;
@@ -63,13 +63,13 @@ public class Station extends Thread{
                 + "\nenergySaving: " + energySaving;*/
         return "{ \"timestamp\": " + new Timestamp(System.currentTimeMillis()) + ", "
                 + "\"station\": " + id + ", "
-                + "\"batteryLevel\": \"" + batteryLevel.getValue() + "%\", "
+                + "\"batteryLevel\": \"" + batteryLevel.getLevel() + "%\", "
                 + "\"isRunning\": " + isRunning() + ", "
                 + "\"isCharging\": " + isCharging() + ", "
                 + "\"energySaving\": " + energySaving + "}";
     }
 
-    private void extremeWeatherConditions(){
+    private void extremeWeatherConditions() throws SensorBrokenException{
         if(windSensor.getValue() > 40 || temperatureSensor.getValue() < -10){
             solarPanel.setOpen(false);
             windTurbine.setOpen(false);
@@ -88,10 +88,10 @@ public class Station extends Thread{
     }
 
     private void checkBattery(){
-        if(batteryLevel.getValue() < 20){
+        if(batteryLevel.getLevel() < 20){
             energySaving = true;
             sendState();
-            if(batteryLevel.getValue() < 2){
+            if(batteryLevel.getLevel() < 2){
                 sendState();
                 stopStation();
             }
@@ -116,7 +116,6 @@ public class Station extends Thread{
     public void run() {
         while (true) {
             if (!energySaving) {
-                // TODO: aaaa
                 waitDataServer();
                 waitMaintenanceServer();
                 checkAndSendErrors();

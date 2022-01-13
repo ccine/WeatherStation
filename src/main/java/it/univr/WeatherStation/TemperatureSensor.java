@@ -8,11 +8,8 @@ public class TemperatureSensor extends Sensor{
 
     @Override
     public void setValue(int value) {
-        if (value < -20)
-            this.value = -20;
-        else if(value > 40)
-            this.value = 40;
-        else
-            this.value = value;
+        if (value < -20 || value > 40)
+            broken = true;
+        this.value = value;
     }
 }

@@ -6,7 +6,11 @@ public class Battery extends Sensor{
         super(value);
     }
 
-    @Override
+    public int getLevel() {
+        return value;
+    }
+
+
     public void setValue(int value) {
         if(value < 0)
             this.value = 0;

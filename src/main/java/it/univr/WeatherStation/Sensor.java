@@ -2,12 +2,14 @@ package it.univr.WeatherStation;
 
 public class Sensor {
     protected int value;
+    protected boolean broken = false;
 
     public Sensor(int value) {
         setValue(value);
     }
 
-    public int getValue() {
+    public int getValue() throws SensorBrokenException {
+        if (broken) throw new SensorBrokenException();
         return value;
     }
 
