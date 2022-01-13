@@ -14,10 +14,12 @@ import java.util.Optional;
 @Controller
 public class AppController {
 
-    private Sensor windSensor = new Sensor(0);
-    private Sensor temperatureSensor = new Sensor(19);
+    private WindSensor windSensor = new WindSensor(0);
+    private TemperatureSensor temperatureSensor = new TemperatureSensor(19);
     private Battery batteryLevel = new Battery(30);
-    private Station weatherStation = new Station(windSensor, temperatureSensor, new Sensor(50), new Sensor(50000), batteryLevel);
+    private Server dataServer = new Server();
+    private Server maintenanceServer = new Server();
+    private Station weatherStation = new Station(1234,windSensor, temperatureSensor, new Sensor(50), new Sensor(50000), batteryLevel, dataServer, maintenanceServer);
 
 
     @RequestMapping("/")
@@ -28,50 +30,38 @@ public class AppController {
 
     @RequestMapping("/incwind")
     public String incwind(){ //TODO: extend Sensor
-        int tmp = windSensor.getValue()+50;
-        if(tmp>100)
-            tmp-=50;
-        windSensor.setValue(tmp);
+        windSensor.setValue(windSensor.getValue() + 50);
         return "redirect:/";
     }
 
     @RequestMapping("/decwind")
     public String decwind(){ //TODO: extend Sensor
-        int tmp = windSensor.getValue()-50;
-        if(tmp<0)
-            tmp=0;
-        windSensor.setValue(tmp);
+        windSensor.setValue(windSensor.getValue() - 50);
         return "redirect:/";
     }
 
     @RequestMapping("/inctemperature")
     public String inctemperature(){ //TODO: extend Sensor
-        int tmp = temperatureSensor.getValue()+10;
-        if(tmp>40)
-            tmp=40;
-        temperatureSensor.setValue(tmp);
+        temperatureSensor.setValue(temperatureSensor.getValue() + 10);
         return "redirect:/";
     }
 
     @RequestMapping("/dectemperature")
     public String dectemperature(){ //TODO: extend Sensor
-        int tmp = temperatureSensor.getValue()-10;
-        if(tmp<-20)
-            tmp=-20;
-        temperatureSensor.setValue(tmp);
+        temperatureSensor.setValue(temperatureSensor.getValue() - 10);
         return "redirect:/";
     }
 
 
     @RequestMapping("/incbattery")
     public String incbattery(){
-        batteryLevel.setLevel(batteryLevel.getLevel()+10);
+        batteryLevel.setValue(batteryLevel.getValue() + 10);
         return "redirect:/";
     }
 
     @RequestMapping("/decbattery")
     public String decbattery(){
-        batteryLevel.setLevel(batteryLevel.getLevel()-10);
+        batteryLevel.setValue(batteryLevel.getValue() - 10);
         return "redirect:/";
     }
 
