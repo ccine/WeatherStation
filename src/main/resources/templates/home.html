@@ -13,46 +13,61 @@
 <div class="container mt-5">
     <div class="row my-5">
         <div class="col">
-            <h2 style="text-align:center;">Last Station Data</h2>
-            <!--<h3 th:text="${'Battery Level: ' + station?.batteryLevel + '%'}">Battery Level: Unknown</h3>-->
-            <!--<h3 th:text="${'Generators Status: ' + (station?.isCharging ? 'open and charging the station' : 'closed cause extreme weather conditions') }">Generators Status: Unknown</h3>-->
-            <!--<h3 th:text="${'Accesa: ' + station?.isRunning}">Accesa: Unknown</h3>-->
+            <div class="card">
+                <h3 class="card-header" style="text-align:center;">Last Station Data</h3>
+                <div class="card-body"></div>
+            </div>
         </div>
         <div class="col">
-            <h2 style="text-align:center;">Last Station State</h2>
-            <!--<h3 th:text="${'Battery Level: ' + station?.batteryLevel + '%'}">Battery Level: Unknown</h3>-->
-            <!--<h3 th:text="${'Generators Status: ' + (station?.isCharging ? 'open and charging the station' : 'closed cause extreme weather conditions') }">Generators Status: Unknown</h3>-->
-            <!--<h3 th:text="${'Accesa: ' + station?.isRunning}">Accesa: Unknown</h3>-->
+            <div class="card">
+                <h3 class="card-header" style="text-align:center;">Last Station State</h3>
+                <div class="card-body"></div>
+            </div>
         </div>
     </div>
-    <div class="row justify-content-center">
+    <div class="row">
         <div class="col-6">
-            <h2 style="text-align:center;">Test Buttons</h2>
-            <div class="container">
-                <div class="row g-2">
-                    <div class="col-6">
-                        <a href="incwind"><button type="button" class="btn btn-primary w-100">Increase wind speed (+50km/h)</button></a>
-                    </div>
-                    <div class="col-6">
-                        <a href="decwind"><button type="button" class="btn btn-danger w-100">Decrease wind speed (-50km/h)</button></a>
-                    </div>
-                    <div class="col-6">
-                        <a href="inctemperature"><button type="button" class="btn btn-primary w-100">Increase temperature (+10°C)</button></a>
-                    </div>
-                    <div class="col-6">
-                        <a href="dectemperature"><button type="button" class="btn btn-danger w-100">Decrease temperature (-10°C)</button></a>
-                    </div>
-                    <div class="col-6">
-                        <a href="incbattery"><button type="button" class="btn btn-primary w-100">Increase battery level (+10%)</button></a>
-                    </div>
-                    <div class="col-6">
-                        <a href="decbattery"><button type="button" class="btn btn-danger w-100">Decrease battery level (-10%)</button></a>
-                    </div>
-                    <div class="col-6" style="text-align:right;">
-                        <a href="getdata"><button type="button" class="btn btn-success">Request data from server</button></a>
-                    </div>
-                    <div class="col-6">
-                        <a href="getstate"><button type="button" class="btn btn-success">Request state from server</button></a>
+            <div class="card" style="height:100%;">
+                <h3 class="card-header" style="text-align:center;">Mock Values</h3>
+                <div class="card-body">
+                    <!--<h3 th:text="${'Battery Level: ' + station?.batteryLevel + '%'}">Battery Level: Unknown</h3>-->
+                    <p>Battery Level: Unknown</p>
+                    <p>Wind Sensor: Unknown</p>
+                    <p>Temperature Sensor: Unknown</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <h2 class="card-header" style="text-align:center;">Test Buttons</h2>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <a href="incwind"><button type="button" class="btn btn-primary w-100">Increase wind speed (+50km/h)</button></a>
+                            </div>
+                            <div class="col-6">
+                                <a href="decwind"><button type="button" class="btn btn-danger w-100">Decrease wind speed (-50km/h)</button></a>
+                            </div>
+                            <div class="col-6">
+                                <a href="inctemperature"><button type="button" class="btn btn-primary w-100">Increase temperature (+10°C)</button></a>
+                            </div>
+                            <div class="col-6">
+                                <a href="dectemperature"><button type="button" class="btn btn-danger w-100">Decrease temperature (-10°C)</button></a>
+                            </div>
+                            <div class="col-6">
+                                <a href="incbattery"><button type="button" class="btn btn-primary w-100">Increase battery level (+10%)</button></a>
+                            </div>
+                            <div class="col-6">
+                                <a href="decbattery"><button type="button" class="btn btn-danger w-100">Decrease battery level (-10%)</button></a>
+                            </div>
+                            <div class="col-6" style="text-align:right;">
+                                <a href="getdata"><button type="button" class="btn btn-success">Request data from server</button></a>
+                            </div>
+                            <div class="col-6">
+                                <a href="getstate"><button type="button" class="btn btn-success">Request state from server</button></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
