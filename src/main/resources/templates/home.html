@@ -13,12 +13,20 @@
 <div class="container mt-5">
     <div class="row my-5">
         <div class="col">
-            <h2 style="text-align:center;">Station Status</h2>
+            <h2 style="text-align:center;">Last Station Data</h2>
             <!--<h3 th:text="${'Battery Level: ' + station?.batteryLevel + '%'}">Battery Level: Unknown</h3>-->
             <!--<h3 th:text="${'Generators Status: ' + (station?.isCharging ? 'open and charging the station' : 'closed cause extreme weather conditions') }">Generators Status: Unknown</h3>-->
             <!--<h3 th:text="${'Accesa: ' + station?.isRunning}">Accesa: Unknown</h3>-->
         </div>
         <div class="col">
+            <h2 style="text-align:center;">Last Station State</h2>
+            <!--<h3 th:text="${'Battery Level: ' + station?.batteryLevel + '%'}">Battery Level: Unknown</h3>-->
+            <!--<h3 th:text="${'Generators Status: ' + (station?.isCharging ? 'open and charging the station' : 'closed cause extreme weather conditions') }">Generators Status: Unknown</h3>-->
+            <!--<h3 th:text="${'Accesa: ' + station?.isRunning}">Accesa: Unknown</h3>-->
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6">
             <h2 style="text-align:center;">Test Buttons</h2>
             <div class="container">
                 <div class="row g-2">
@@ -50,10 +58,14 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col">
-            <h2 style="text-align:center;">Server Output</h2>
-            <textarea class="form-control" placeholder="Output of server" id="textarea" style="height: 100px" disabled readonly></textarea>
+    <div class="row my-5">
+        <div class="col-6">
+            <h2 style="text-align:center;">DataServer Output</h2>
+            <textarea class="form-control" placeholder="Output of server" id="textareaDS" style="height: 200px" disabled readonly></textarea>
+        </div>
+        <div class="col-6">
+            <h2 style="text-align:center;">MantainanceServer Output</h2>
+            <textarea class="form-control" placeholder="Output of server" id="textareaMS" style="height: 200px" disabled readonly></textarea>
         </div>
     </div>
 </div>
