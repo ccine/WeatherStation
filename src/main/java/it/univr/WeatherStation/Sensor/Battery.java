@@ -1,4 +1,4 @@
-package it.univr.WeatherStation;
+package it.univr.WeatherStation.Sensor;
 
 public class Battery extends Sensor{
 

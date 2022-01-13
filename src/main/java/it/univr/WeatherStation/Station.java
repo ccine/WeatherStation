@@ -1,12 +1,14 @@
 package it.univr.WeatherStation;
 
+import it.univr.WeatherStation.Sensor.Battery;
+import it.univr.WeatherStation.Sensor.Sensor;
+import it.univr.WeatherStation.Sensor.SensorBrokenException;
+import it.univr.WeatherStation.Server.Server;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Station extends Thread {
 
@@ -85,7 +87,6 @@ public class Station extends Thread {
 
             json.put("manualRequest", manualRequest);
         } catch (JSONException jex) {
-
         }
         return json;
     }
@@ -103,7 +104,6 @@ public class Station extends Thread {
             json.put("isCharging", isCharging());
             json.put("energySaving", energySaving);
         } catch (JSONException | SensorBrokenException ex) {
-
         }
         return json;
     }
