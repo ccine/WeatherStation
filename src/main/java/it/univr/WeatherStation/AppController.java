@@ -19,7 +19,7 @@ public class AppController {
     private Battery batteryLevel = new Battery(30);
     private Server dataServer = new Server();
     private Server maintenanceServer = new Server();
-    private Station weatherStation = new Station(windSensor, temperatureSensor, new Sensor(50), new Sensor(50000), batteryLevel, dataServer, maintenanceServer);
+    private Station weatherStation = new Station(1234,windSensor, temperatureSensor, new Sensor(50), new Sensor(50000), batteryLevel, dataServer, maintenanceServer);
 
 
     @RequestMapping("/")

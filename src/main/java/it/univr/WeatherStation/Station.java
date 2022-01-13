@@ -1,10 +1,12 @@
 package it.univr.WeatherStation;//import org.json.JSONObject;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Station extends Thread{
 
+    private int id;
     private Sensor batteryLevel;
     private Sensor windSensor;
     private Sensor temperatureSensor;
@@ -18,7 +20,8 @@ public class Station extends Thread{
     private List<String> errors;
 
 
-    public Station(Sensor windSensor, Sensor temperatureSensor, Sensor humiditySensor, Sensor lightSensor, Battery batteryLevel, Server dataServer, Server maintenanceServer) {
+    public Station(int id, Sensor windSensor, Sensor temperatureSensor, Sensor humiditySensor, Sensor lightSensor, Battery batteryLevel, Server dataServer, Server maintenanceServer) {
+        this.id = id;
         this.windSensor = windSensor;
         this.temperatureSensor = temperatureSensor;
         this.humiditySensor = humiditySensor;
@@ -35,16 +38,38 @@ public class Station extends Thread{
         start();
     }
 
-    public void sendData(){
+    private void sendData(){
         dataServer.sendData(readSensorsData());
     }
 
-    public String readSensorsData(){
-        // TODO: Aggiungi dati sensori
-        return "a";
+    private String readSensorsData(){
+        return "{ \"timestamp\": " + new Timestamp(System.currentTimeMillis()) + ", "
+                + "\"station\": " + id + ", "
+                + "\"wind\": \"" + windSensor.getValue() + " km/h\", "
+                + "\"temperature\": \"" + temperatureSensor.getValue() + "°C\", "
+                + "\"light\": \"" + lightSensor.getValue() + " lm\", "
+                + "\"humidity\": \"" + humiditySensor.getValue() + "%\"}";
     }
 
-    public void extremeWeatherConditions(){
+    private void sendState(){
+        maintenanceServer.sendData(getStationState());
+    }
+
+    private String getStationState(){
+        /*return "Station " + id + ":"
+                + "\nbatteryLevel: " + getBatteryLevel()
+                + "\nisRunning: " + isRunning()
+                + "\nisCharging: " + isCharging()
+                + "\nenergySaving: " + energySaving;*/
+        return "{ \"timestamp\": " + new Timestamp(System.currentTimeMillis()) + ", "
+                + "\"station\": " + id + ", "
+                + "\"batteryLevel\": \"" + batteryLevel.getValue() + "%\", "
+                + "\"isRunning\": " + isRunning() + ", "
+                + "\"isCharging\": " + isCharging() + ", "
+                + "\"energySaving\": " + energySaving + "}";
+    }
+
+    private void extremeWeatherConditions(){
         if(windSensor.getValue() > 40 || temperatureSensor.getValue() < -10){
             solarPanel.setOpen(false);
             windTurbine.setOpen(false);
@@ -54,7 +79,7 @@ public class Station extends Thread{
         }
     }
 
-    public void checkAndSendErrors(){
+    private void checkAndSendErrors(){
         if(errors.isEmpty())
             return;
         for (String error: errors) {
@@ -62,11 +87,7 @@ public class Station extends Thread{
         }
     }
 
-    public void sendState(){
-        maintenanceServer.sendData(getStationState());
-    }
-
-    public void checkBattery(){
+    private void checkBattery(){
         if(batteryLevel.getValue() < 20){
             energySaving = true;
             sendState();
@@ -81,12 +102,12 @@ public class Station extends Thread{
         interrupt();
     }
 
-    public void waitDataServer(){
+    private void waitDataServer(){
         if (dataServer.isWaiting())
             sendData();
     }
 
-    public void waitMaintenanceServer(){
+    private void waitMaintenanceServer(){
         if (maintenanceServer.isWaiting())
             sendState();
     }
@@ -105,25 +126,12 @@ public class Station extends Thread{
         }
     }
 
-
-    public boolean isEnergySaving() {
-        return energySaving;
-    }
-
-    public int getBatteryLevel() {
-        return batteryLevel.getValue();
-    }
-
-    public boolean isCharging(){
+    private boolean isCharging(){
         return windTurbine.isOpen() || solarPanel.isOpen();
     }
 
-    private String getStationState(){
-        return "Station:"
-                + "\nbatteryLevel: " + getBatteryLevel()
-                + "\nisRunning: " + !isInterrupted()
-                + "\nisCharging: " + isCharging()
-                + "\nenergySaving: " + isEnergySaving();
+    private boolean isRunning(){
+        return !isInterrupted();
     }
 }
 
