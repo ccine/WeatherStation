@@ -1,5 +1,7 @@
 package it.univr.WeatherStation;
 
+import org.json.JSONObject;
+
 public class Server {
 
     private String receivedData;
@@ -10,8 +12,8 @@ public class Server {
         this.isWaiting = false;
     }
 
-    public void sendData(String data){
-        receivedData += data + "\n";
+    public void sendData(JSONObject data){
+        receivedData += data.toString() + "\n";
         isWaiting = false;
     }
 

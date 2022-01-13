@@ -1,23 +1,28 @@
-package it.univr.WeatherStation;//import org.json.JSONObject;
+package it.univr.WeatherStation;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Station extends Thread{
+public class Station extends Thread {
 
-    private int id;
-    private Battery batteryLevel;
-    private Sensor windSensor;
-    private Sensor temperatureSensor;
-    private Sensor humiditySensor;
-    private Sensor lightSensor;
-    private Generator solarPanel;
-    private Generator windTurbine;
+    private final int id;
+    private final Battery batteryLevel;
+    private final Sensor windSensor;
+    private final Sensor temperatureSensor;
+    private final Sensor humiditySensor;
+    private final Sensor lightSensor;
+    private final Generator solarPanel;
+    private final Generator windTurbine;
     private boolean energySaving;
-    private Server dataServer;
-    private Server maintenanceServer;
-    private List<String> errors;
+    private final Server dataServer;
+    private final Server maintenanceServer;
+    private JSONObject errors;
+    private boolean sendedBatteryLow;
 
 
     public Station(int id, Sensor windSensor, Sensor temperatureSensor, Sensor humiditySensor, Sensor lightSensor, Battery batteryLevel, Server dataServer, Server maintenanceServer) {
@@ -33,89 +38,141 @@ public class Station extends Thread{
         solarPanel = new Generator(true);
         windTurbine = new Generator(true);
         energySaving = false;
-        errors = new ArrayList<>();
+        errors = new JSONObject();
+        sendedBatteryLow = false;
 
         start();
     }
 
-    private void sendData(){
-        dataServer.sendData(readSensorsData());
+    private void sendData(boolean manualRequest) {
+        dataServer.sendData(readSensorsData(manualRequest));
     }
 
-    private String readSensorsData(){
-        return "{ \"timestamp\": " + new Timestamp(System.currentTimeMillis()) + ", "
-                + "\"station\": " + id + ", "
-                + "\"wind\": \"" + windSensor.getValue() + " km/h\", "
-                + "\"temperature\": \"" + temperatureSensor.getValue() + "°C\", "
-                + "\"light\": \"" + lightSensor.getValue() + " lm\", "
-                + "\"humidity\": \"" + humiditySensor.getValue() + "%\"}";
+    private JSONObject readSensorsData(boolean manualRequest) {
+        JSONObject json = new JSONObject();
+        JSONObject jsonErr = new JSONObject();
+        JSONArray err = new JSONArray();
+        try {
+            json.put("timestamp", new Timestamp(System.currentTimeMillis()));
+            json.put("station", id);
+            jsonErr.put("timestamp", new Timestamp(System.currentTimeMillis()));
+            jsonErr.put("station", id);
+            try {
+                json.put("wind", windSensor.getValue() + " km/h");
+            } catch (SensorBrokenException ex) {
+                err.put("wind");
+            }
+            try {
+                json.put("temperature", temperatureSensor.getValue() + "°C");
+            } catch (SensorBrokenException ex) {
+                err.put("temperature");
+            }
+            try {
+                json.put("light", lightSensor.getValue() + " lm");
+            } catch (SensorBrokenException ex) {
+                err.put("light");
+            }
+            try {
+                json.put("humidity", humiditySensor.getValue() + "%");
+            } catch (SensorBrokenException ex) {
+                err.put("humidity");
+            }
+
+            if (err.length() > 0) {
+                errors = jsonErr;
+                errors.put("sensorsBroken", err);
+            }
+
+            json.put("manualRequest", manualRequest);
+        } catch (JSONException jex) {
+
+        }
+        return json;
     }
 
-    private void sendState(){
+    private void sendState() {
         maintenanceServer.sendData(getStationState());
     }
 
-    private String getStationState(){
-        /*return "Station " + id + ":"
-                + "\nbatteryLevel: " + getBatteryLevel()
-                + "\nisRunning: " + isRunning()
-                + "\nisCharging: " + isCharging()
-                + "\nenergySaving: " + energySaving;*/
-        return "{ \"timestamp\": " + new Timestamp(System.currentTimeMillis()) + ", "
-                + "\"station\": " + id + ", "
-                + "\"batteryLevel\": \"" + batteryLevel.getLevel() + "%\", "
-                + "\"isRunning\": " + isRunning() + ", "
-                + "\"isCharging\": " + isCharging() + ", "
-                + "\"energySaving\": " + energySaving + "}";
-    }
+    private JSONObject getStationState() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("timestamp", new Timestamp(System.currentTimeMillis()));
+            json.put("station", id);
+            json.put("batteryLevel", batteryLevel.getValue() + "%");
+            json.put("isCharging", isCharging());
+            json.put("energySaving", energySaving);
+        } catch (JSONException | SensorBrokenException ex) {
 
-    private void extremeWeatherConditions() throws SensorBrokenException{
-        if(windSensor.getValue() > 40 || temperatureSensor.getValue() < -10){
-            solarPanel.setOpen(false);
-            windTurbine.setOpen(false);
-        } else {
-            solarPanel.setOpen(true);
-            windTurbine.setOpen(true);
         }
+        return json;
     }
 
-    private void checkAndSendErrors(){
-        if(errors.isEmpty())
-            return;
-        for (String error: errors) {
-            System.out.println(error);
-        }
-    }
-
-    private void checkBattery(){
-        if(batteryLevel.getLevel() < 20){
-            energySaving = true;
-            sendState();
-            if(batteryLevel.getLevel() < 2){
-                sendState();
-                stopStation();
+    private void extremeWeatherConditions() {
+        try {
+            if (windSensor.getValue() > 40 || temperatureSensor.getValue() < -10) {
+                closeGenerator();
+            } else {
+                openGenerator();
             }
+        } catch (SensorBrokenException ex) {
+        }
+    }
+
+    private void checkAndSendErrors() {
+        if (errors.length() == 0)
+            return;
+        maintenanceServer.sendData(errors);
+        errors = new JSONObject();
+    }
+
+
+    private void checkBattery() {
+        try {
+            if (batteryLevel.getValue() < 20) {
+                if (sendedBatteryLow)
+                    return;
+                energySaving = true;
+                sendState();
+                sendedBatteryLow = true;
+            } else if (batteryLevel.getValue() < 2) {
+                stopStation();
+            } else {
+                energySaving = false;
+                sendedBatteryLow = false;
+            }
+        } catch (SensorBrokenException e) {
         }
     }
 
     private void stopStation() {
+        closeGenerator();
+        sendState();
         interrupt();
     }
 
-    private void waitDataServer(){
+    private void waitDataServer() {
         if (dataServer.isWaiting())
-            sendData();
+            sendData(true);
     }
 
-    private void waitMaintenanceServer(){
+    private void waitMaintenanceServer() {
         if (maintenanceServer.isWaiting())
             sendState();
     }
 
     @Override
     public void run() {
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = 0L;
+
         while (true) {
             if (!energySaving) {
+                elapsedTime = System.currentTimeMillis();
+                if (elapsedTime - startTime >= 1 * 60 * 1000) {
+                    sendData(false);
+                    startTime = elapsedTime;
+                }
                 waitDataServer();
                 waitMaintenanceServer();
                 checkAndSendErrors();
@@ -125,12 +182,24 @@ public class Station extends Thread{
         }
     }
 
-    private boolean isCharging(){
-        return windTurbine.isOpen() || solarPanel.isOpen();
+    private void openGenerator() {
+        if(isCharging())
+            return;
+        solarPanel.setOpen(true);
+        windTurbine.setOpen(true);
+        sendState();
     }
 
-    private boolean isRunning(){
-        return !isInterrupted();
+    private void closeGenerator() {
+        if(!isCharging())
+            return;
+        solarPanel.setOpen(false);
+        windTurbine.setOpen(false);
+        sendState();
+    }
+
+    private boolean isCharging() {
+        return windTurbine.isOpen() || solarPanel.isOpen();
     }
 }
 

@@ -31,38 +31,56 @@ public class AppController {
 
     @RequestMapping("/incwind")
     public String incwind(){ //TODO: extend Sensor
-        windSensor.setValue(windSensor.getValue() + 50);
+        try {
+            windSensor.setValue(windSensor.getValue() + 50);
+        } catch (SensorBrokenException e) {
+        }
         return "redirect:/";
     }
 
     @RequestMapping("/decwind")
     public String decwind(){ //TODO: extend Sensor
-        windSensor.setValue(windSensor.getValue() - 50);
+        try {
+            windSensor.setValue(windSensor.getValue() - 50);
+        } catch (SensorBrokenException e) {
+        }
         return "redirect:/";
     }
 
     @RequestMapping("/inctemperature")
     public String inctemperature(){ //TODO: extend Sensor
-        temperatureSensor.setValue(temperatureSensor.getValue() + 10);
+        try {
+            temperatureSensor.setValue(temperatureSensor.getValue() + 10);
+        } catch (SensorBrokenException e) {
+        }
         return "redirect:/";
     }
 
     @RequestMapping("/dectemperature")
     public String dectemperature(){ //TODO: extend Sensor
-        temperatureSensor.setValue(temperatureSensor.getValue() - 10);
+        try {
+            temperatureSensor.setValue(temperatureSensor.getValue() - 10);
+        } catch (SensorBrokenException e) {
+        }
         return "redirect:/";
     }
 
 
     @RequestMapping("/incbattery")
     public String incbattery(){
-        batteryLevel.setValue(batteryLevel.getValue() + 10);
+        try {
+            batteryLevel.setValue(batteryLevel.getValue() + 10);
+        } catch (SensorBrokenException e) {
+        }
         return "redirect:/";
     }
 
     @RequestMapping("/decbattery")
     public String decbattery(){
-        batteryLevel.setValue(batteryLevel.getValue() - 10);
+        try {
+            batteryLevel.setValue(batteryLevel.getValue() - 10);
+        } catch (SensorBrokenException e) {
+        }
         return "redirect:/";
     }
 
