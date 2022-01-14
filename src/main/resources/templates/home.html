@@ -44,8 +44,8 @@
                 <h3 class="card-header" style="text-align:center;">Mock Values</h3>
                 <div class="card-body">
                     <p th:text="${'Battery Level: ' + battery + '%'}">Battery Level: Unknown</p>
-                    <p th:text="${'Wind Sensor: ' + wind + ' Km/h'}">Wind Sensor: Unknown</p>
-                    <p th:text="${'Temperature Sensor: ' + temperature + '°C'}">Temperature Sensor: Unknown</p>
+                    <p th:text="${'Wind Sensor: ' + (wind != null ? wind + ' Km/h' : 'Unknown')}"/>
+                    <p th:text="${'Temperature Sensor: ' + (temperature != null ? temperature + ' °C' : 'Unknown')}"/>
                 </div>
             </div>
         </div>
