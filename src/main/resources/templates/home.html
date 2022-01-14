@@ -15,13 +15,26 @@
         <div class="col">
             <div class="card">
                 <h3 class="card-header" style="text-align:center;">Last Station Data</h3>
-                <div class="card-body"></div>
+                <div class="card-body">
+                    <p th:text="${'Timestamp: ' + data.timestamp}">Timestamp: Unknown</p>
+                    <p th:text="${'StationID: ' + data.station}">StationID: Unknown</p>
+                    <p th:text="${'Wind: ' + data.wind}">Wind: Unknown</p>
+                    <p th:text="${'Temperature: ' + data.temperature}">Temperature: Unknown</p>
+                    <p th:text="${'Light: ' + data.light}">Light: Unknown</p>
+                    <p th:text="${'Humidity: ' + data.humidity}">Humidity: Unknown</p>
+                </div>
             </div>
         </div>
         <div class="col">
-            <div class="card">
+            <div class="card" style="height:100%;">
                 <h3 class="card-header" style="text-align:center;">Last Station State</h3>
-                <div class="card-body"></div>
+                <div class="card-body">
+                    <p th:text="${'Timestamp: ' + state.timestamp}">Timestamp: Unknown</p>
+                    <p th:text="${'StationID: ' + state.station}">StationID: Unknown</p>
+                    <p th:text="${'Battery Level: ' + state.batteryLevel}">Battery Level: Unknown</p>
+                    <p th:text="${'Charging: ' + state.isCharging}">Charging: Unknown</p>
+                    <p th:text="${'EnergySaving: ' + state.energySaving}">EnergySaving: Unknown</p>
+                </div>
             </div>
         </div>
     </div>
@@ -30,10 +43,9 @@
             <div class="card" style="height:100%;">
                 <h3 class="card-header" style="text-align:center;">Mock Values</h3>
                 <div class="card-body">
-                    <!--<h3 th:text="${'Battery Level: ' + station?.batteryLevel + '%'}">Battery Level: Unknown</h3>-->
-                    <p>Battery Level: Unknown</p>
-                    <p>Wind Sensor: Unknown</p>
-                    <p>Temperature Sensor: Unknown</p>
+                    <p th:text="${'Battery Level: ' + battery + '%'}">Battery Level: Unknown</p>
+                    <p th:text="${'Wind Sensor: ' + wind + ' Km/h'}">Wind Sensor: Unknown</p>
+                    <p th:text="${'Temperature Sensor: ' + temperature + '°C'}">Temperature Sensor: Unknown</p>
                 </div>
             </div>
         </div>
