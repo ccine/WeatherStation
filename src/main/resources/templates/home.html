@@ -9,19 +9,18 @@
 
 <body>
 <h1 style="text-align:center;">Weather Station Monitor</h1>
-
 <div class="container mt-5">
     <div class="row my-5">
         <div class="col">
             <div class="card">
                 <h3 class="card-header" style="text-align:center;">Last Station Data</h3>
                 <div class="card-body">
-                    <p th:text="${'Timestamp: ' + data.timestamp}">Timestamp: Unknown</p>
-                    <p th:text="${'StationID: ' + data.station}">StationID: Unknown</p>
-                    <p th:text="${'Wind: ' + data.wind}">Wind: Unknown</p>
-                    <p th:text="${'Temperature: ' + data.temperature}">Temperature: Unknown</p>
-                    <p th:text="${'Light: ' + data.light}">Light: Unknown</p>
-                    <p th:text="${'Humidity: ' + data.humidity}">Humidity: Unknown</p>
+                    <p>Timestamp: <label th:text="${data.timestamp}">Unknown</label></p>
+                    <p>StationID: <label th:text="${data.station}">Unknown</label></p>
+                    <p>Wind: <label th:text="${data.wind}">Unknown</label></p>
+                    <p>Temperature: <label th:text="${data.temperature}">Unknown</label></p>
+                    <p>Light: <label th:text="${data.light}">Unknown</label></p>
+                    <p>Humidity: <label th:text="${data.humidity}">Unknown</label></p>
                 </div>
             </div>
         </div>
@@ -29,11 +28,11 @@
             <div class="card" style="height:100%;">
                 <h3 class="card-header" style="text-align:center;">Last Station State</h3>
                 <div class="card-body">
-                    <p th:text="${'Timestamp: ' + state.timestamp}">Timestamp: Unknown</p>
-                    <p th:text="${'StationID: ' + state.station}">StationID: Unknown</p>
-                    <p th:text="${'Battery Level: ' + state.batteryLevel}">Battery Level: Unknown</p>
-                    <p th:text="${'Charging: ' + state.isCharging}">Charging: Unknown</p>
-                    <p th:text="${'EnergySaving: ' + state.energySaving}">EnergySaving: Unknown</p>
+                    <p>Timestamp: <label th:text="${state.timestamp}">Unknown</label></p>
+                    <p>StationID: <label th:text="${state.station}">Unknown</label></p>
+                    <p>Battery Level: <label th:text="${state.batteryLevel}">Unknown</label></p>
+                    <p>Charging: <label th:text="${state.isCharging}">Unknown</label></p>
+                    <p>EnergySaving: <label th:text="${state.energySaving}">Unknown</label></p>
                 </div>
             </div>
         </div>
@@ -43,9 +42,9 @@
             <div class="card" style="height:100%;">
                 <h3 class="card-header" style="text-align:center;">Mock Values</h3>
                 <div class="card-body">
-                    <p th:text="${'Battery Level: ' + battery + '%'}">Battery Level: Unknown</p>
-                    <p th:text="${'Wind Sensor: ' + (wind != null ? wind + ' Km/h' : 'Unknown')}"/>
-                    <p th:text="${'Temperature Sensor: ' + (temperature != null ? temperature + ' °C' : 'Unknown')}"/>
+                    <p>Battery Level: <label th:text="${battery + '%'}">Unknown</label></p>
+                    <p>Wind Sensor: <label th:text="${(wind != null ? wind + ' Km/h' : 'Unknown')}"/></p>
+                    <p>Temperature Sensor: <label th:text="${(temperature != null ? temperature + ' °C' : 'Unknown')}"/></p>
                 </div>
             </div>
         </div>

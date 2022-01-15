@@ -1,8 +1,11 @@
 package it.univr.WeatherStation.PO;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class HomePO extends PageObject{
 
@@ -11,50 +14,50 @@ public class HomePO extends PageObject{
     }
 
     //STATION DATA
-    @FindBy(xpath = "//body/div[1]/div[1]/div[1]/div[1]/div[1]/p[1]")
+    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/p[1]/label[1]")
     private WebElement StationDataTimestamp;
 
-    @FindBy(xpath = "//body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/p[2]")
+    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/p[2]/label[1]")
     private WebElement StationDataStationID;
 
-    @FindBy(xpath = "//p[contains(text(),'Wind:')]")
+    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/p[3]/label[1]")
     private WebElement StationDataWind;
 
-    @FindBy(xpath = "//p[contains(text(),'Temperature:')]")
+    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/p[4]/label[1]")
     private WebElement StationDataTemperature;
 
-    @FindBy(xpath = "//p[contains(text(),'Light:')]")
+    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/p[5]/label[1]")
     private WebElement StationDataLight;
 
-    @FindBy(xpath = "//p[contains(text(),'Humidity:')]")
+    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/p[6]/label[1]")
     private WebElement StationDataHumidity;
 
 
     //STATION STATE
-    @FindBy(xpath = "//body/div[1]/div[2]/div[1]/div[1]/div[1]/p[1]")
+    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/p[1]/label[1]")
     private WebElement StationStateTimestamp;
 
-    @FindBy(xpath = "//body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/p[2]")
+    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/p[2]/label[1]")
     private WebElement StationStateStationID;
 
-    @FindBy(xpath = "//body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/p[3]")
+    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/p[3]/label[1]")
     private WebElement StationStateBatteryLevel;
 
-    @FindBy(xpath = "//p[contains(text(),'Charging:')]")
+    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/p[4]/label[1]")
     private WebElement StationStateCharging;
 
-    @FindBy(xpath = "//p[contains(text(),'EnergySaving:')]")
+    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/p[5]/label[1]")
     private WebElement StationStateEnergySaving;
 
 
     //MOCK VALUES
-    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/p[1]")
+    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/p[1]/label[1]")
     private WebElement MockBatteryLevel;
 
-    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/p[2]")
+    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/p[2]/label[1]")
     private WebElement MockWind;
 
-    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/p[3]")
+    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/p[3]/label[1]")
     private WebElement MockTemperature;
 
 
@@ -93,60 +96,66 @@ public class HomePO extends PageObject{
 
 
     //METODI
+    public void javaScriptClick(WebElement element){
+        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        executor.executeScript("arguments[0].click();", element);
+    }
+
+    //METODI TEST
     public String getStationDataTimestamp(){
-        return StationDataTimestamp.getText().substring(StationDataTimestamp.getText().indexOf(" "));
+        return StationDataTimestamp.getText();
     }
 
     public String getStationDataStationID() {
-        return StationDataStationID.getText().substring(StationDataStationID.getText().indexOf(" "));
+        return StationDataStationID.getText();
     }
 
     public String getStationDataWind() {
-        return StationDataWind.getText().substring(StationDataWind.getText().indexOf(" "));
+        return StationDataWind.getText();
     }
 
     public String getStationDataTemperature() {
-        return StationDataTemperature.getText().substring(StationDataTemperature.getText().indexOf(" "));
+        return StationDataTemperature.getText();
     }
 
     public String getStationDataLight() {
-        return StationDataLight.getText().substring(StationDataLight.getText().indexOf(" "));
+        return StationDataLight.getText();
     }
 
     public String getStationDataHumidity() {
-        return StationDataHumidity.getText().substring(StationDataHumidity.getText().indexOf(" "));
+        return StationDataHumidity.getText();
     }
 
     public String getStationStateTimestamp() {
-        return StationStateTimestamp.getText().substring(StationStateTimestamp.getText().indexOf(" "));
+        return StationStateTimestamp.getText();
     }
 
     public String getStationStateStationID() {
-        return StationStateStationID.getText().substring(StationStateStationID.getText().indexOf(" "));
+        return StationStateStationID.getText();
     }
 
     public String getStationStateBatteryLevel() {
-        return StationStateBatteryLevel.getText().substring(StationStateBatteryLevel.getText().indexOf(" "));
+        return StationStateBatteryLevel.getText();
     }
 
     public String getStationStateCharging() {
-        return StationStateCharging.getText().substring(StationStateCharging.getText().indexOf(" "));
+        return StationStateCharging.getText();
     }
 
     public String getStationStateEnergySaving() {
-        return StationStateEnergySaving.getText().substring(StationStateEnergySaving.getText().indexOf(" "));
+        return StationStateEnergySaving.getText();
     }
 
     public String getMockBatteryLevel() {
-        return MockBatteryLevel.getText().substring(MockBatteryLevel.getText().indexOf(" "));
+        return MockBatteryLevel.getText();
     }
 
     public String getMockWind() {
-        return MockWind.getText().substring(MockWind.getText().indexOf(" "));
+        return MockWind.getText();
     }
 
     public String getMockTemperature() {
-        return MockTemperature.getText().substring(MockTemperature.getText().indexOf(" "));
+        return MockTemperature.getText();
     }
 
     public String getTextareaDS() {
@@ -154,40 +163,38 @@ public class HomePO extends PageObject{
     }
 
     public String getTextareaMS() {
-        return textareaMS.getText();
+        return textareaMS.getAttribute("value");
     }
 
     public void incwindButtonClick(){
-        incwindButton.click();
+        javaScriptClick(incwindButton);
     }
 
     public void decwindButtonClick(){
-        decwindButton.click();
+        javaScriptClick(decwindButton);
     }
 
     public void inctemperatureButtonClick(){
-        inctemperatureButton.click();
+        javaScriptClick(inctemperatureButton);
     }
 
     public void dectemperatureButtonClick(){
-        dectemperatureButton.click();
+        javaScriptClick(dectemperatureButton);
     }
 
     public void incbatteryButtonClick(){
-        incbatteryButton.click();
+        javaScriptClick(incbatteryButton);
     }
 
     public void decbatteryButtonClick(){
-        decbatteryButton.click();
+        javaScriptClick(decbatteryButton);
     }
 
     public void getdataButtonClick(){
-        getdataButton.click();
+        javaScriptClick(getdataButton);
     }
 
     public void getstateButtonClick(){
-        getstateButton.click();
+        javaScriptClick(getstateButton);
     }
-
-
 }

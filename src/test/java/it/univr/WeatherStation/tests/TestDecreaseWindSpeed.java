@@ -12,6 +12,6 @@ public class TestDecreaseWindSpeed extends BaseTest{
     public void TestDecreaseWindSpeed(){
         HomePO homePage = new HomePO(driver);
         homePage.decwindButtonClick();
-        assertEquals("Unknown", homePage.getMockBatteryLevel());
+        assertEquals("Unknown", homePage.getMockWind());
     }
 }

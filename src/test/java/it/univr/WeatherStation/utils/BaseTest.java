@@ -20,31 +20,27 @@ public abstract class BaseTest {
 
     @Before
     public void setUp() {
-        org.openqa.selenium.chrome.ChromeOptions chrome_options = new ChromeOptions();
-        chrome_options.addArguments("--headless");
-        if(SystemUtils.IS_OS_WINDOWS){
-            System.setProperty("webdriver.chrome.driver",
-                    Paths.get("src/test/resources/chromedriver_win32_96/chromedriver.exe").toString());
+        String path = "src/test/resources/chromedriver";
+        if (SystemUtils.IS_OS_WINDOWS) {
+            System.setProperty("webdriver.chrome.driver", Paths.get(path + "_win32_96/chromedriver.exe").toString());
+        } else if (SystemUtils.IS_OS_MAC) {
+            System.setProperty("webdriver.chrome.driver", Paths.get(path + "_mac64_96/chromedriver").toString());
+        } else if (SystemUtils.IS_OS_LINUX) {
+            System.setProperty("webdriver.chrome.driver", Paths.get(path + "_linux64_96/chromedriver").toString());
         }
-        else if (SystemUtils.IS_OS_MAC){
-            System.setProperty("webdriver.chrome.driver",
-                    Paths.get("src/test/resources/chromedriver_mac64_96/chromedriver").toString());
-        }
-        else if (SystemUtils.IS_OS_LINUX){
-            System.setProperty("webdriver.chrome.driver",
-                    Paths.get("src/test/resources/chromedriver_linux64_96/chromedriver").toString());
-        }
-        if (driver == null)
+        if(driver == null) {
+            org.openqa.selenium.chrome.ChromeOptions chrome_options = new ChromeOptions();
+            //chrome_options.addArguments("--headless");
             driver = new ChromeDriver(chrome_options);
-
-        driver.get("http://localhost:8080/");
+            driver.manage().window().maximize();
+            driver.get("http://localhost:8080");
+        }
     }
 
     @After
     public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
+        driver.quit();
+        driver = null;
     }
 
 }

@@ -10,6 +10,9 @@ sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
+	/*maven {
+		url = uri('https://repo.maven.apache.org/maven2')
+	}*/
 }
 
 dependencies {
@@ -22,8 +25,8 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-	implementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
-	implementation 'junit:junit:4.12'
+	implementation 'junit:junit:4.13.1'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.4.0'
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 }
 
