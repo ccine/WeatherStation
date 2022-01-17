@@ -109,4 +109,10 @@ public class AppController {
         return "redirect:/";
     }
 
+    @RequestMapping("/clear")
+    public String clear(){
+        System.out.println("Ciao");
+        return "redirect:/";
+    }
+
 }

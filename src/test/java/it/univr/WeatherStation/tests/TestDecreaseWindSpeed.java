@@ -13,5 +13,12 @@ public class TestDecreaseWindSpeed extends BaseTest{
         HomePO homePage = new HomePO(driver);
         homePage.decwindButtonClick();
         assertEquals("Unknown", homePage.getMockWind());
+
+        //RESET
+        homePage.incwindButtonClick();
+        homePage.clearTextAreas();
+        assertEquals("0 km/h", homePage.getMockWind());
+        assertEquals("", homePage.getTextareaDS());
+        assertEquals("", homePage.getTextareaMS());
     }
 }

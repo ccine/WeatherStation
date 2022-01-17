@@ -31,5 +31,13 @@ public class TestEnergySaving extends BaseTest {
         assertTrue(StringUtils.countMatches(receivedState, "}") == 1);
         assertTrue(receivedState.contains("\"batteryLevel\":\"10%\""));
         assertTrue(receivedData.equals(""));
+
+        //RESET
+        homePage.incbatteryButtonClick();
+        homePage.incbatteryButtonClick();
+        homePage.clearTextAreas();
+        assertEquals("30%", homePage.getMockBatteryLevel());
+        assertEquals("", homePage.getTextareaDS());
+        assertEquals("", homePage.getTextareaMS());
     }
 }

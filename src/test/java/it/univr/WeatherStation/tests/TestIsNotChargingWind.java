@@ -7,13 +7,15 @@ import it.univr.WeatherStation.PO.HomePO;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class TestIncreaseWindSpeed extends BaseTest{
+public class TestIsNotChargingWind extends BaseTest{
 
     @Test
-    public void TestIncreaseWindSpeed(){
+    public void TestIsNotChargingWind(){
         HomePO homePage = new HomePO(driver);
         homePage.incwindButtonClick();
-        assertEquals("50 Km/h", homePage.getMockWind());
+        String receivedState = homePage.getTextareaMS();
+        assertTrue(StringUtils.countMatches(receivedState, "}") == 1);
+        assertTrue(receivedState.contains("\"isCharging\":false"));
 
         //RESET
         homePage.decwindButtonClick();

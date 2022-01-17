@@ -86,6 +86,9 @@ public class HomePO extends PageObject{
     @FindBy(id = "getstate")
     private WebElement getstateButton;
 
+    @FindBy(id = "clear")
+    private WebElement clearButton;
+
 
     //OUTPUT
     @FindBy(id = "textareaDS")
@@ -197,5 +200,22 @@ public class HomePO extends PageObject{
 
     public void getstateButtonClick(){
         javaScriptClick(getstateButton);
+    }
+
+    public void clearServer(){
+        javaScriptClick(clearButton);
+    }
+
+    public void clearTextAreaDS(){
+        textareaDS.clear();
+    }
+
+    public void clearTextAreaMS(){
+        textareaMS.clear();
+    }
+
+    public void clearTextAreas(){
+        textareaDS.clear();
+        textareaMS.clear();
     }
 }

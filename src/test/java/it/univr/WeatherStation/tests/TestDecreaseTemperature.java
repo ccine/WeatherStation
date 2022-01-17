@@ -12,5 +12,12 @@ public class TestDecreaseTemperature extends BaseTest{
         HomePO homePage = new HomePO(driver);
         homePage.dectemperatureButtonClick();
         assertEquals("9 °C", homePage.getMockTemperature());
+
+        //RESET
+        homePage.inctemperatureButtonClick();
+        homePage.clearTextAreas();
+        assertEquals("19 °C", homePage.getMockTemperature());
+        assertEquals("", homePage.getTextareaDS());
+        assertEquals("", homePage.getTextareaMS());
     }
 }

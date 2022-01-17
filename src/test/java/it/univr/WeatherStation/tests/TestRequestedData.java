@@ -5,8 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import it.univr.WeatherStation.PO.HomePO;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TestRequestedData extends BaseTest{
 
@@ -17,5 +17,11 @@ public class TestRequestedData extends BaseTest{
         String receivedData = homePage.getTextareaDS();
         assertTrue(StringUtils.countMatches(receivedData, "}") == 1);
         assertTrue(receivedData.contains("\"manualRequest\":true"));
+
+        //RESET
+        homePage.clearTextAreas();
+        assertEquals("", homePage.getTextareaDS());
+        assertEquals("", homePage.getTextareaMS());
+        //clear server
     }
 }

@@ -13,5 +13,12 @@ public class TestDecreaseBatteryLevel extends BaseTest{
         HomePO homePage = new HomePO(driver);
         homePage.decbatteryButtonClick();
         assertEquals("20%", homePage.getMockBatteryLevel());
+
+        //RESET
+        homePage.incbatteryButtonClick();
+        homePage.clearTextAreas();
+        assertEquals("30%", homePage.getMockBatteryLevel());
+        assertEquals("", homePage.getTextareaDS());
+        assertEquals("", homePage.getTextareaMS());
     }
 }

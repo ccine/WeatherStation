@@ -34,5 +34,11 @@ public class TestRequestInitialData extends BaseTest{
         assertEquals("19 °C", homePage.getStationDataTemperature());
         assertEquals("50000 lm", homePage.getStationDataLight());
         assertEquals("50%", homePage.getStationDataHumidity());
+
+        //RESET
+        homePage.clearTextAreas();
+        assertEquals("", homePage.getTextareaDS());
+        assertEquals("", homePage.getTextareaMS());
+        //clear server
     }
 }

@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import it.univr.WeatherStation.PO.HomePO;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TestCheckBatteryRecover extends BaseTest{
@@ -14,16 +15,24 @@ public class TestCheckBatteryRecover extends BaseTest{
         HomePO homePage = new HomePO(driver);
         homePage.decbatteryButtonClick();
         homePage.decbatteryButtonClick();
-        String receivedData = homePage.getTextareaMS();
-        assertTrue(StringUtils.countMatches(receivedData, "}") == 1);
-        assertTrue(receivedData.contains("\"batteryLevel\":\"10%\""));
-        assertTrue(receivedData.contains("\"energySaving\":\"true\""));
+        String receivedState = homePage.getTextareaMS();
+        assertTrue(StringUtils.countMatches(receivedState, "}") == 1);
+        assertTrue(receivedState.contains("\"batteryLevel\":\"10%\""));
+        assertTrue(receivedState.contains("\"energySaving\":\"true\""));
         homePage.incbatteryButtonClick();
-        receivedData = homePage.getTextareaMS();
-        assertTrue(StringUtils.countMatches(receivedData, "}") == 2);
-        receivedData = receivedData.split("}")[1];
-        assertTrue(receivedData.contains("\"batteryLevel\":\"20%\""));
-        assertTrue(receivedData.contains("\"energySaving\":\"false\""));
+        receivedState = homePage.getTextareaMS();
+        assertTrue(StringUtils.countMatches(receivedState, "}") == 2);
+        receivedState = receivedState.split("}")[1];
+        assertTrue(receivedState.contains("\"batteryLevel\":\"20%\""));
+        assertTrue(receivedState.contains("\"energySaving\":\"false\""));
+
+        //RESET
+        homePage.incbatteryButtonClick();
+        homePage.clearTextAreas();
+        assertEquals("30%", homePage.getMockBatteryLevel());
+        assertEquals("", homePage.getTextareaDS());
+        assertEquals("", homePage.getTextareaMS());
+        //clear server
     }
 }
 
