@@ -5,7 +5,11 @@ public class Sensor {
     protected boolean broken = false;
 
     public Sensor(int value) {
-        setValue(value);
+        try {
+            setValue(value);
+        } catch (SensorBrokenException e) {
+            this.value = 0;
+        }
     }
 
     public int getValue() throws SensorBrokenException {
@@ -13,5 +17,5 @@ public class Sensor {
         return value;
     }
 
-    public void setValue(int value){ this.value = value; };
+    public void setValue(int value) throws SensorBrokenException { this.value = value; };
 }

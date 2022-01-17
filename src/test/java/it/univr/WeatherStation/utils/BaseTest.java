@@ -30,7 +30,7 @@ public abstract class BaseTest {
         }
         if(driver == null) {
             org.openqa.selenium.chrome.ChromeOptions chrome_options = new ChromeOptions();
-            //chrome_options.addArguments("--headless");
+            chrome_options.addArguments("--headless");
             driver = new ChromeDriver(chrome_options);
             driver.manage().window().maximize();
             driver.get("http://localhost:8080");

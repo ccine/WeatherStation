@@ -129,14 +129,14 @@ public class Station extends Thread {
 
     private void checkBattery() {
         try {
-            if (batteryLevel.getValue() < 20) {
+            if (batteryLevel.getValue() < 2) {
+                stopStation();
+            } else if (batteryLevel.getValue() < 20) {
                 if (sendedBatteryLow)
                     return;
                 energySaving = true;
                 sendState();
                 sendedBatteryLow = true;
-            } else if (batteryLevel.getValue() < 2) {
-                stopStation();
             } else {
                 energySaving = false;
                 sendedBatteryLow = false;
