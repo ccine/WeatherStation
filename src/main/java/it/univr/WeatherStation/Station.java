@@ -26,6 +26,8 @@ public class Station extends Thread {
     private JSONObject errors;
     private boolean sendedBatteryLow;
 
+    private boolean running = true;
+
 
     public Station(int id, Sensor windSensor, Sensor temperatureSensor, Sensor humiditySensor, Sensor lightSensor, Battery batteryLevel, Server dataServer, Server maintenanceServer) {
         this.id = id;
@@ -65,7 +67,7 @@ public class Station extends Thread {
                 err.put("wind");
             }
             try {
-                json.put("temperature", temperatureSensor.getValue() + "°C");
+                json.put("temperature", temperatureSensor.getValue() + " °C");
             } catch (SensorBrokenException ex) {
                 err.put("temperature");
             }
@@ -147,8 +149,8 @@ public class Station extends Thread {
 
     private void stopStation() {
         closeGenerator();
-        sendState();
         interrupt();
+        running = false;
     }
 
     private void waitDataServer() {
@@ -166,7 +168,7 @@ public class Station extends Thread {
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
 
-        while (true) {
+        while (running) {
             if (!energySaving) {
                 elapsedTime = System.currentTimeMillis();
                 if (elapsedTime - startTime >= 1 * 60 * 1000) {
@@ -177,9 +179,10 @@ public class Station extends Thread {
                 waitMaintenanceServer();
                 checkAndSendErrors();
             }
-            checkBattery();
             extremeWeatherConditions();
+            checkBattery();
         }
+        return;
     }
 
     private void openGenerator() {
@@ -200,6 +203,10 @@ public class Station extends Thread {
 
     private boolean isCharging() {
         return windTurbine.isOpen() || solarPanel.isOpen();
+    }
+
+    public boolean isRunning(){
+        return running;
     }
 }
 

@@ -20,8 +20,17 @@ public class StationTest {
         ServerData dataServer = new ServerData();
         ServerMaintenance maintenanceServer = new ServerMaintenance();
         Station weatherStation = new Station(1234, windSensor, temperatureSensor, new Sensor(50), new Sensor(50000), batteryLevel, dataServer, maintenanceServer);
-        assertFalse(weatherStation.isInterrupted());
+        dataServer.setWaiting(true);
+        maintenanceServer.setWaiting(true);
+        assertTrue(weatherStation.isRunning());
         batteryLevel.setValue(1);
-        assertFalse(weatherStation.isInterrupted());
+        Thread.sleep(1000);
+        assertFalse(weatherStation.isRunning());
+    }
+
+    @Test
+    public void isRunning() {
+        Station weatherStation = new Station(1234, new WindSensor(0), new TemperatureSensor(19), new Sensor(50), new Sensor(50000), new Battery(30), new ServerData(), new ServerMaintenance());
+        assertTrue(weatherStation.isRunning());
     }
 }
