@@ -101,6 +101,7 @@ public class HomePO extends PageObject{
         executor.executeScript("arguments[0].click();", element);
     }
 
+
     //METODI TEST
     public String getStationDataTimestamp(){
         return StationDataTimestamp.getText();

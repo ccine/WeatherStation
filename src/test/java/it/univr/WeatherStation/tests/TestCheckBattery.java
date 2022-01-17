@@ -3,7 +3,6 @@ package it.univr.WeatherStation.tests;
 import it.univr.WeatherStation.utils.BaseTest;
 import org.junit.Test;
 import it.univr.WeatherStation.PO.HomePO;
-import org.openqa.selenium.By;
 
 import static org.junit.Assert.assertTrue;
 
@@ -15,7 +14,7 @@ public class TestCheckBattery extends BaseTest{
         homePage.decbatteryButtonClick();
         homePage.decbatteryButtonClick();
         String receivedData = homePage.getTextareaMS();
-        System.out.println(receivedData);
+        //System.out.println(receivedData);
         assertTrue(receivedData.contains("10%"));
         assertTrue(receivedData.contains("\"energySaving\":\"true\""));
         homePage.decbatteryButtonClick();
