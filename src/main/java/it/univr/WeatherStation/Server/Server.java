@@ -11,8 +11,9 @@ public class Server {
     protected JSONObject lastValue;
 
     public Server() {
-        this.receivedData = "";
-        this.isWaiting = false;
+        receivedData = "";
+        isWaiting = false;
+        lastValue = new JSONObject();
     }
 
     public void sendData(JSONObject data){
@@ -31,6 +32,12 @@ public class Server {
 
     public void setWaiting(boolean waiting) {
         isWaiting = waiting;
+    }
+
+    public void clearData(){
+        receivedData = "";
+        isWaiting = false;
+        lastValue = new JSONObject();
     }
 
 }

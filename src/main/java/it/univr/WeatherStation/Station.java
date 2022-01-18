@@ -9,6 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Station extends Thread {
 
@@ -150,6 +152,15 @@ public class Station extends Thread {
     private void stopStation() {
         closeGenerator();
         interrupt();
+        JSONObject stopMessage = new JSONObject();
+        try {
+            stopMessage.put("timestamp", new Timestamp(System.currentTimeMillis()));
+            stopMessage.put("station", id);
+            stopMessage.put("error", "Station is stopping");
+        } catch (JSONException e) {
+
+        }
+        maintenanceServer.sendData(stopMessage);
         running = false;
     }
 

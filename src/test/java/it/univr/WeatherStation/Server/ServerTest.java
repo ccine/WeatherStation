@@ -40,4 +40,12 @@ public class ServerTest {
         s.setWaiting(true);
         assertTrue(s.isWaiting());
     }
+
+    @Test
+    public void clearData() {
+        Server s = new Server();
+        s.clearData();
+        assertFalse(s.isWaiting());
+        assertEquals("", s.getReceivedData());
+    }
 }
