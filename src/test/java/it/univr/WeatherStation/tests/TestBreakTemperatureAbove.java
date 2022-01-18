@@ -17,6 +17,7 @@ public class TestBreakTemperatureAbove extends BaseTest {
         for(int i = 0; i < 3; i++)
             homePage.inctemperatureButtonClick();
         homePage.getdataButtonClick();
+        System.out.println(homePage.getTextareaMS());
         assertEquals("Unknown", homePage.getMockTemperature());
         assertTrue(StringUtils.countMatches(homePage.getTextareaDS(), "}") == 1);
         assertTrue(StringUtils.countMatches(homePage.getTextareaMS(), "}") == 1);
@@ -25,10 +26,6 @@ public class TestBreakTemperatureAbove extends BaseTest {
         //RESET
         for(int i = 0; i < 3; i++)
             homePage.dectemperatureButtonClick();
-        homePage.clearTextAreas();
         assertEquals("19 °C", homePage.getMockTemperature());
-        assertEquals("", homePage.getTextareaDS());
-        assertEquals("", homePage.getTextareaMS());
-        //clear server
     }
 }

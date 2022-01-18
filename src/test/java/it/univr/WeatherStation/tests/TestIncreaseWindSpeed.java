@@ -17,9 +17,6 @@ public class TestIncreaseWindSpeed extends BaseTest{
 
         //RESET
         homePage.decwindButtonClick();
-        homePage.clearTextAreas();
         assertEquals("0 km/h", homePage.getMockWind());
-        assertEquals("", homePage.getTextareaDS());
-        assertEquals("", homePage.getTextareaMS());
     }
 }

@@ -35,9 +35,6 @@ public class TestEnergySaving extends BaseTest {
         //RESET
         homePage.incbatteryButtonClick();
         homePage.incbatteryButtonClick();
-        homePage.clearTextAreas();
         assertEquals("30%", homePage.getMockBatteryLevel());
-        assertEquals("", homePage.getTextareaDS());
-        assertEquals("", homePage.getTextareaMS());
     }
 }

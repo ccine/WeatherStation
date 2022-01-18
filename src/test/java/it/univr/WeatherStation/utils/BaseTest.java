@@ -1,5 +1,6 @@
 package it.univr.WeatherStation.utils;
 
+import it.univr.WeatherStation.PO.HomePO;
 import org.apache.commons.lang3.SystemUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -11,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.nio.file.Paths;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -39,6 +42,12 @@ public abstract class BaseTest {
 
     @After
     public void tearDown() {
+        HomePO homePage = new HomePO(driver);
+        homePage.clearServer();
+        assertEquals("", homePage.getTextareaDS());
+        assertEquals("", homePage.getTextareaMS());
+        assertEquals("", homePage.getStationDataStationID());
+        assertEquals("", homePage.getStationStateStationID());
         driver.quit();
         driver = null;
     }

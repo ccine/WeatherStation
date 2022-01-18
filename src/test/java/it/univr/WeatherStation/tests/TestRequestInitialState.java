@@ -31,11 +31,5 @@ public class TestRequestInitialState extends BaseTest{
         assertEquals("30%", homePage.getStationStateBatteryLevel());
         assertEquals("true", homePage.getStationStateCharging());
         assertEquals("false", homePage.getStationStateEnergySaving());
-
-        //RESET
-        homePage.clearTextAreas();
-        assertEquals("", homePage.getTextareaDS());
-        assertEquals("", homePage.getTextareaMS());
-        //clear server
     }
 }

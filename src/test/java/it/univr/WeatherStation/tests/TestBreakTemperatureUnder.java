@@ -26,10 +26,6 @@ public class TestBreakTemperatureUnder extends BaseTest {
         //RESET
         for(int i = 0; i < 4; i++)
             homePage.inctemperatureButtonClick();
-        homePage.clearTextAreas();
         assertEquals("19 °C", homePage.getMockTemperature());
-        assertEquals("", homePage.getTextareaDS());
-        assertEquals("", homePage.getTextareaMS());
-        //pulisci server
     }
 }

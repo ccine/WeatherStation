@@ -26,10 +26,6 @@ public class TestBreakWindAbove extends BaseTest {
         //RESET
         for(int i = 0; i < 3; i++)
             homePage.decwindButtonClick();
-        homePage.clearTextAreas();
         assertEquals("0 km/h", homePage.getMockWind());
-        assertEquals("", homePage.getTextareaDS());
-        assertEquals("", homePage.getTextareaMS());
-        //clear server
     }
 }

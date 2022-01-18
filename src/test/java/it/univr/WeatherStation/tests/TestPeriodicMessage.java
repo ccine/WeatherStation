@@ -18,11 +18,5 @@ public class TestPeriodicMessage extends BaseTest{
         String receivedData = homePage.getTextareaDS();
         assertTrue(StringUtils.countMatches(receivedData, "}") == 1);
         assertTrue(receivedData.contains("\"manualRequest\":false"));
-
-        //RESET
-        homePage.clearTextAreas();
-        assertEquals("", homePage.getTextareaDS());
-        assertEquals("", homePage.getTextareaMS());
-        //clear server
     }
 }

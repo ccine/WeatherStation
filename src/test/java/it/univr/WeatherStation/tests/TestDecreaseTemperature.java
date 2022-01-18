@@ -15,9 +15,6 @@ public class TestDecreaseTemperature extends BaseTest{
 
         //RESET
         homePage.inctemperatureButtonClick();
-        homePage.clearTextAreas();
         assertEquals("19 °C", homePage.getMockTemperature());
-        assertEquals("", homePage.getTextareaDS());
-        assertEquals("", homePage.getTextareaMS());
     }
 }

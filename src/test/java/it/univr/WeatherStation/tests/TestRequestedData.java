@@ -17,11 +17,5 @@ public class TestRequestedData extends BaseTest{
         String receivedData = homePage.getTextareaDS();
         assertTrue(StringUtils.countMatches(receivedData, "}") == 1);
         assertTrue(receivedData.contains("\"manualRequest\":true"));
-
-        //RESET
-        homePage.clearTextAreas();
-        assertEquals("", homePage.getTextareaDS());
-        assertEquals("", homePage.getTextareaMS());
-        //clear server
     }
 }

@@ -21,10 +21,6 @@ public class TestIsNotChargingTemperature extends BaseTest{
         //RESET
         for(int i = 0; i < 3; i++)
             homePage.inctemperatureButtonClick();
-        homePage.clearTextAreas();
         assertEquals("19 °C", homePage.getMockTemperature());
-        assertEquals("", homePage.getTextareaDS());
-        assertEquals("", homePage.getTextareaMS());
-        //clear server
     }
 }

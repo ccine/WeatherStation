@@ -164,12 +164,12 @@ public class Station extends Thread {
         running = false;
     }
 
-    private void waitDataServer() {
+    public void waitDataServer() {
         if (dataServer.isWaiting())
             sendData(true);
     }
 
-    private void waitMaintenanceServer() {
+    public void waitMaintenanceServer() {
         if (maintenanceServer.isWaiting())
             sendState();
     }

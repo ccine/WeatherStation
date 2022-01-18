@@ -20,10 +20,12 @@ public class TestCheckBatteryTurnOff extends BaseTest{
         assertTrue(receivedData.contains("\"energySaving\":\"true\""));
         homePage.decbatteryButtonClick();
         receivedData = homePage.getTextareaMS();
-        assertTrue(StringUtils.countMatches(receivedData, "}") == 2);
-        receivedData = receivedData.split("}")[1];
-        assertTrue(receivedData.contains("0%"));
-        assertTrue(receivedData.contains("\"isCharging\":\"false\""));
+        assertTrue(StringUtils.countMatches(receivedData, "}") == 3);
+        String receivedData1 = receivedData.split("}")[1];
+        assertTrue(receivedData1.contains("0%"));
+        assertTrue(receivedData1.contains("\"isCharging\":\"false\""));
+        String receivedData2 = receivedData.split("}")[2];
+        assertTrue(receivedData1.contains("\"error\":\"Station is stopping\""));
     }
 }
 

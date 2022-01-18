@@ -28,17 +28,11 @@ public class TestRequestInitialData extends BaseTest{
         Date data = new Date(System.currentTimeMillis());
         assertTrue(receivedData.contains(data.toString()));
 
-        assertEquals(data, homePage.getStationDataTimestamp().split(" ")[0]);
+        assertEquals(data.toString(), homePage.getStationDataTimestamp().split(" ")[0]);
         assertEquals("1234", homePage.getStationDataStationID());
         assertEquals("0 km/h", homePage.getStationDataWind());
         assertEquals("19 °C", homePage.getStationDataTemperature());
         assertEquals("50000 lm", homePage.getStationDataLight());
         assertEquals("50%", homePage.getStationDataHumidity());
-
-        //RESET
-        homePage.clearTextAreas();
-        assertEquals("", homePage.getTextareaDS());
-        assertEquals("", homePage.getTextareaMS());
-        //clear server
     }
 }
