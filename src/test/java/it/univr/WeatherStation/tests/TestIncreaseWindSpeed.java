@@ -13,7 +13,7 @@ public class TestIncreaseWindSpeed extends BaseTest{
     public void TestIncreaseWindSpeed(){
         HomePO homePage = new HomePO(driver);
         homePage.incwindButtonClick();
-        assertEquals("50 Km/h", homePage.getMockWind());
+        assertEquals("50 km/h", homePage.getMockWind());
 
         //RESET
         homePage.decwindButtonClick();
