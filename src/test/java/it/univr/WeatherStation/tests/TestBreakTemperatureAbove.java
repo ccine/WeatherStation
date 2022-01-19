@@ -17,11 +17,14 @@ public class TestBreakTemperatureAbove extends BaseTest {
         for(int i = 0; i < 3; i++)
             homePage.inctemperatureButtonClick();
         homePage.getdataButtonClick();
-        System.out.println(homePage.getTextareaMS());
+        String receivedData = homePage.getTextareaDS();
+        String receivedState = homePage.getTextareaMS();
+        //System.out.println(homePage.getTextareaMS());
         assertEquals("Unknown", homePage.getMockTemperature());
-        assertTrue(StringUtils.countMatches(homePage.getTextareaDS(), "}") == 1);
-        assertTrue(StringUtils.countMatches(homePage.getTextareaMS(), "}") == 1);
-        assertTrue(homePage.getTextareaMS().contains("\"sensorBroken\":[\"temperature\"]"));
+        assertTrue(StringUtils.countMatches(receivedData, "}") == 1);
+        assertTrue(StringUtils.countMatches(receivedState, "}") == 1);
+        assertTrue(!receivedData.contains("\"temperature\""));
+        assertTrue(receivedState.contains("\"sensorBroken\":[\"temperature\"]"));
 
         //RESET
         for(int i = 0; i < 3; i++)

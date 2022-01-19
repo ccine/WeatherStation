@@ -13,7 +13,7 @@ public class TestRequestedData extends BaseTest{
     @Test
     public void TestRequestedData(){
         HomePO homePage = new HomePO(driver);
-        homePage.getstateButtonClick();
+        homePage.getdataButtonClick();
         String receivedData = homePage.getTextareaDS();
         assertTrue(StringUtils.countMatches(receivedData, "}") == 1);
         assertTrue(receivedData.contains("\"manualRequest\":true"));

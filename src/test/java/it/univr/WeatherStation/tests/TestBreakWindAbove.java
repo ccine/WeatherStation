@@ -17,10 +17,13 @@ public class TestBreakWindAbove extends BaseTest {
         for(int i = 0; i < 3; i++)
             homePage.incwindButtonClick();
         homePage.getdataButtonClick();
+        String receivedData = homePage.getTextareaDS();
+        String receivedState = homePage.getTextareaMS();
         assertEquals("Unknown", homePage.getMockWind());
-        assertTrue(StringUtils.countMatches(homePage.getTextareaDS(), "}") == 1);
-        assertTrue(StringUtils.countMatches(homePage.getTextareaMS(), "}") == 2);
-        String receivedState = homePage.getTextareaMS().split("}")[1];
+        assertTrue(StringUtils.countMatches(receivedData, "}") == 1);
+        assertTrue(StringUtils.countMatches(receivedState, "}") == 2);
+        assertTrue(!receivedData.contains("\"wind\""));
+        receivedState = homePage.getTextareaMS().split("}")[1];
         assertTrue(receivedState.contains("\"sensorBroken\":[\"wind\"]"));
 
         //RESET

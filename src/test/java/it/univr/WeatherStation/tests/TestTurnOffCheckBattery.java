@@ -7,10 +7,11 @@ import it.univr.WeatherStation.PO.HomePO;
 
 import static org.junit.Assert.assertTrue;
 
-public class TestCheckBatteryTurnOff extends BaseTest{
+public class TestTurnOffCheckBattery extends BaseTest{
 
     @Test
-    public void TestCheckBatteryTurnOff(){
+    @Deprecated
+    public void TestTurnOffCheckBattery(){
         HomePO homePage = new HomePO(driver);
         homePage.decbatteryButtonClick();
         homePage.decbatteryButtonClick();
@@ -25,7 +26,7 @@ public class TestCheckBatteryTurnOff extends BaseTest{
         assertTrue(receivedData1.contains("0%"));
         assertTrue(receivedData1.contains("\"isCharging\":\"false\""));
         String receivedData2 = receivedData.split("}")[2];
-        assertTrue(receivedData1.contains("\"error\":\"Station is stopping\""));
+        assertTrue(receivedData2.contains("\"error\":\"Station is stopping\""));
     }
 }
 
