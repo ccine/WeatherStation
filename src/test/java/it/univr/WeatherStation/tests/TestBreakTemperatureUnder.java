@@ -17,19 +17,18 @@ public class TestBreakTemperatureUnder extends BaseTest {
         for(int i = 0; i < 4; i++)
             homePage.dectemperatureButtonClick();
         homePage.getdataButtonClick();
+        String receivedData = homePage.getTextareaDS();
+        String receivedState = homePage.getTextareaMS();
         assertEquals("Unknown", homePage.getMockTemperature());
-        assertTrue(StringUtils.countMatches(homePage.getTextareaDS(), "}") == 1);
-        assertTrue(StringUtils.countMatches(homePage.getTextareaMS(), "}") == 2);
-        String receivedState = homePage.getTextareaMS().split("}")[1];
+        assertTrue(StringUtils.countMatches(receivedData, "}") == 1);
+        assertTrue(StringUtils.countMatches(receivedState, "}") == 2);
+        assertTrue(!receivedData.contains("\"temperature\""));
+        receivedState = homePage.getTextareaMS().split("}")[1];
         assertTrue(receivedState.contains("\"sensorBroken\":[\"temperature\"]"));
 
         //RESET
         for(int i = 0; i < 4; i++)
             homePage.inctemperatureButtonClick();
-        homePage.clearTextAreas();
         assertEquals("19 °C", homePage.getMockTemperature());
-        assertEquals("", homePage.getTextareaDS());
-        assertEquals("", homePage.getTextareaMS());
-        //pulisci server
     }
 }

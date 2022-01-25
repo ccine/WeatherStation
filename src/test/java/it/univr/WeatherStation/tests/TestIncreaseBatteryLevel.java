@@ -15,9 +15,6 @@ public class TestIncreaseBatteryLevel extends BaseTest{
 
         //RESET
         homePage.decbatteryButtonClick();
-        homePage.clearTextAreas();
         assertEquals("30%", homePage.getMockBatteryLevel());
-        assertEquals("", homePage.getTextareaDS());
-        assertEquals("", homePage.getTextareaMS());
     }
 }

@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.6.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'it.univr'
@@ -10,9 +11,6 @@ sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
-	/*maven {
-		url = uri('https://repo.maven.apache.org/maven2')
-	}*/
 }
 
 dependencies {
@@ -28,5 +26,12 @@ dependencies {
 	implementation 'junit:junit:4.13.1'
 	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.4.0'
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+}
+
+test {
+	finalizedBy jacocoTestReport
+}
+jacocoTestReport {
+	dependsOn test
 }
 

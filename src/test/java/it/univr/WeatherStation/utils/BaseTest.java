@@ -1,9 +1,12 @@
 package it.univr.WeatherStation.utils;
 
+import it.univr.WeatherStation.PO.HomePO;
 import org.apache.commons.lang3.SystemUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -12,7 +15,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.nio.file.Paths;
 
+import static org.junit.Assert.assertEquals;
+
 @RunWith(SpringRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public abstract class BaseTest {
 
@@ -39,6 +45,12 @@ public abstract class BaseTest {
 
     @After
     public void tearDown() {
+        HomePO homePage = new HomePO(driver);
+        homePage.clearServer();
+        assertEquals("", homePage.getTextareaDS());
+        assertEquals("", homePage.getTextareaMS());
+        assertEquals("", homePage.getStationDataStationID());
+        assertEquals("", homePage.getStationStateStationID());
         driver.quit();
         driver = null;
     }

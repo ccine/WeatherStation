@@ -30,10 +30,12 @@ public class AppController {
         try {
             model.addAttribute("wind", windSensor.getValue());
         } catch (SensorBrokenException e) {
+            e.printStackTrace();
         }
         try {
             model.addAttribute("temperature", temperatureSensor.getValue());
         } catch (SensorBrokenException e) {
+            e.printStackTrace();
         }
         model.addAttribute("state", maintenanceServer.getLastState());
         model.addAttribute("data", dataServer.getLastData());
@@ -47,6 +49,7 @@ public class AppController {
         try {
             windSensor.setValue(windSensor.getValue() + 50);
         } catch (SensorBrokenException e) {
+            windSensor.setValue(0);
         }
         return "redirect:/";
     }
@@ -56,6 +59,7 @@ public class AppController {
         try {
             windSensor.setValue(windSensor.getValue() - 50);
         } catch (SensorBrokenException e) {
+            windSensor.setValue(0);
         }
         return "redirect:/";
     }
@@ -65,6 +69,7 @@ public class AppController {
         try {
             temperatureSensor.setValue(temperatureSensor.getValue() + 10);
         } catch (SensorBrokenException e) {
+            temperatureSensor.setValue(19);
         }
         return "redirect:/";
     }
@@ -74,6 +79,7 @@ public class AppController {
         try {
             temperatureSensor.setValue(temperatureSensor.getValue() - 10);
         } catch (SensorBrokenException e) {
+            temperatureSensor.setValue(19);
         }
         return "redirect:/";
     }
@@ -84,6 +90,7 @@ public class AppController {
         try {
             batteryLevel.setValue(batteryLevel.getValue() + 10);
         } catch (SensorBrokenException e) {
+            batteryLevel.setValue(30);
         }
         return "redirect:/";
     }
@@ -93,25 +100,32 @@ public class AppController {
         try {
             batteryLevel.setValue(batteryLevel.getValue() - 10);
         } catch (SensorBrokenException e) {
+            batteryLevel.setValue(30);
         }
         return "redirect:/";
     }
 
     @RequestMapping("/getdata")
-    public String getdata() {
+    public String getdata(){
         dataServer.setWaiting(true);
+        weatherStation.waitDataServer(); //modifica
+        //Thread.sleep(1000);
+        //System.out.println(dataServer.getLastData().getStation());
+        //System.out.println(dataServer.isWaiting());
         return "redirect:/";
     }
 
     @RequestMapping("/getstate")
     public String getstate() {
         maintenanceServer.setWaiting(true);
+        weatherStation.waitMaintenanceServer(); //modifica
         return "redirect:/";
     }
 
     @RequestMapping("/clear")
     public String clear(){
-        System.out.println("Ciao");
+        dataServer.clearData();
+        maintenanceServer.clearData();
         return "redirect:/";
     }
 

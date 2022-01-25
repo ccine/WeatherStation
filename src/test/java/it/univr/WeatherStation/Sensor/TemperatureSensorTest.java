@@ -9,6 +9,7 @@ public class TemperatureSensorTest {
     @Test
     public void setValue() {
         TemperatureSensor ts = new TemperatureSensor(20);
-        assertThrows(SensorBrokenException.class, () -> ts.setValue(-30));
+        ts.setValue(-30);
+        assertThrows(SensorBrokenException.class, () -> ts.getValue());
     }
 }

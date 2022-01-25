@@ -206,14 +206,6 @@ public class HomePO extends PageObject{
         javaScriptClick(clearButton);
     }
 
-    public void clearTextAreaDS(){
-        textareaDS.clear();
-    }
-
-    public void clearTextAreaMS(){
-        textareaMS.clear();
-    }
-
     public void clearTextAreas(){
         textareaDS.clear();
         textareaMS.clear();

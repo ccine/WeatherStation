@@ -7,7 +7,7 @@ import it.univr.WeatherStation.PO.HomePO;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class TestIsNotChargingTemperature extends BaseTest{
+public class TestIsNotChargingChangeStateTemperature extends BaseTest{
 
     @Test
     public void TestIsNotChargingTemperature(){
@@ -17,14 +17,15 @@ public class TestIsNotChargingTemperature extends BaseTest{
         String receivedState = homePage.getTextareaMS();
         assertTrue(StringUtils.countMatches(receivedState, "}") == 1);
         assertTrue(receivedState.contains("\"isCharging\":false"));
+        homePage.inctemperatureButtonClick();
+        receivedState = homePage.getTextareaMS();
+        assertTrue(StringUtils.countMatches(receivedState, "}") == 2);
+        receivedState = receivedState.split("}")[1];
+        assertTrue(receivedState.contains("\"isCharging\":true"));
 
         //RESET
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 2; i++)
             homePage.inctemperatureButtonClick();
-        homePage.clearTextAreas();
         assertEquals("19 °C", homePage.getMockTemperature());
-        assertEquals("", homePage.getTextareaDS());
-        assertEquals("", homePage.getTextareaMS());
-        //clear server
     }
 }

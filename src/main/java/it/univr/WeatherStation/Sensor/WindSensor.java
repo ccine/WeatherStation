@@ -7,13 +7,13 @@ public class WindSensor extends Sensor{
     }
 
     @Override
-    public void setValue(int value) throws SensorBrokenException {
-        if (!broken)
-            this.value = value;
+    public void setValue(int value){
         if (value < 0 || value > 100) {
             broken = true;
-            throw new SensorBrokenException();
-        } else
+        } else {
             broken = false;
+            this.value = value;
+        }
+
     }
 }
