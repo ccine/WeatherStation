@@ -108,17 +108,12 @@ public class AppController {
     @RequestMapping("/getdata")
     public String getdata(){
         dataServer.setWaiting(true);
-        weatherStation.waitDataServer(); //modifica
-        //Thread.sleep(1000);
-        //System.out.println(dataServer.getLastData().getStation());
-        //System.out.println(dataServer.isWaiting());
         return "redirect:/";
     }
 
     @RequestMapping("/getstate")
     public String getstate() {
         maintenanceServer.setWaiting(true);
-        weatherStation.waitMaintenanceServer(); //modifica
         return "redirect:/";
     }
 

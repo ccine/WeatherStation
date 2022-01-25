@@ -13,5 +13,12 @@ public class Sensor {
         return value;
     }
 
-    public void setValue(int value){ this.value = value; };
+    public void setValue(int value) {
+        synchronized (this){
+            this.value = value;
+            notify();
+        }
+    }
+
+    ;
 }

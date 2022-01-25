@@ -9,10 +9,10 @@ public class Battery extends Sensor{
     @Override
     public void setValue(int value) {
         if(value < 0)
-            this.value = 0;
+            super.setValue(0);
         else if(value > 100)
-            this.value = 100;
+            super.setValue(100);
         else
-            this.value = value;
+            super.setValue(value);
     }
 }
