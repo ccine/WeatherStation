@@ -97,4 +97,4 @@ I test di seguito citati sono quelli più inerenti a verificare gli scenrai espo
 ![IntelliJCoverage](/assets/img/IntelliJCoverage.png "IntelliJCoverage")
 
 #### Test coverage Jacoco
-![JacocoCoverage](/assets/img/JacocoCoverage.png "JacocoCoverage")
+![JacocoCoverage](/assets/img/JacocoCoverage.PNG "JacocoCoverage")
