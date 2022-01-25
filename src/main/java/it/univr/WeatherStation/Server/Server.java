@@ -7,36 +7,36 @@ import java.sql.Timestamp;
 public class Server {
 
     private String receivedData;
-    private boolean isWaiting;
     protected JSONObject lastValue;
 
     public Server() {
         receivedData = "";
-        isWaiting = false;
         lastValue = new JSONObject();
     }
 
     public void sendData(JSONObject data){
         receivedData += data.toString() + "\n";
         lastValue = data;
-        isWaiting = false;
     }
 
-    public boolean isWaiting() {
-        return isWaiting;
+    public void waitServer() throws InterruptedException {
+        synchronized (this){
+            wait();
+        }
     }
 
     public String getReceivedData() {
         return receivedData;
     }
 
-    public void setWaiting(boolean waiting) {
-        isWaiting = waiting;
+    public void setWaiting() {
+        synchronized (this){
+            notify();
+        }
     }
 
     public void clearData(){
         receivedData = "";
-        isWaiting = false;
         lastValue = new JSONObject();
     }
 

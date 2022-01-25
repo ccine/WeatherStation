@@ -3,16 +3,20 @@ package it.univr.WeatherStation;
 import it.univr.WeatherStation.Sensor.Battery;
 import it.univr.WeatherStation.Sensor.Sensor;
 import it.univr.WeatherStation.Sensor.SensorBrokenException;
+import it.univr.WeatherStation.Sensor.SensorErrors;
 import it.univr.WeatherStation.Server.Server;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
-public class Station extends Thread {
+public class Station {
 
     private final int id;
     private final Battery batteryLevel;
@@ -25,10 +29,12 @@ public class Station extends Thread {
     private boolean energySaving;
     private final Server dataServer;
     private final Server maintenanceServer;
-    private JSONObject errors;
+    private final SensorErrors errors;
     private boolean sendedBatteryLow;
 
     private boolean running = true;
+    private Timer timerSendData;
+    private ThreadPoolExecutor executor;
 
 
     public Station(int id, Sensor windSensor, Sensor temperatureSensor, Sensor humiditySensor, Sensor lightSensor, Battery batteryLevel, Server dataServer, Server maintenanceServer) {
@@ -44,10 +50,13 @@ public class Station extends Thread {
         solarPanel = new Generator(true);
         windTurbine = new Generator(true);
         energySaving = false;
-        errors = new JSONObject();
+        errors = new SensorErrors();
         sendedBatteryLow = false;
 
-        start();
+        timerSendData = new Timer();
+        executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(5);
+
+        startStation();
     }
 
     private void sendData(boolean manualRequest) {
@@ -85,8 +94,8 @@ public class Station extends Thread {
             }
 
             if (err.length() > 0) {
-                errors = jsonErr;
-                errors.put("sensorsBroken", err);
+                jsonErr.put("sensorsBroken", err);
+                errors.pushErrors(jsonErr);
             }
 
             json.put("manualRequest", manualRequest);
@@ -113,45 +122,63 @@ public class Station extends Thread {
     }
 
     private void extremeWeatherConditions() {
-        try {
-            if (windSensor.getValue() > 40 || temperatureSensor.getValue() < -10) {
-                closeGenerator();
-            } else {
-                openGenerator();
+        synchronized (windSensor) {
+            try {
+                windSensor.wait();
+                if (windSensor.getValue() > 40) {
+                    closeGenerator();
+                } else {
+                    openGenerator();
+                }
+            } catch (InterruptedException | SensorBrokenException e) {
+
             }
-        } catch (SensorBrokenException ex) {
         }
     }
 
     private void checkAndSendErrors() {
-        if (errors.length() == 0)
-            return;
-        maintenanceServer.sendData(errors);
-        errors = new JSONObject();
+        synchronized (errors) {
+            try {
+                errors.wait();
+                if (!energySaving) {
+                    maintenanceServer.sendData(errors.popErrors());
+                }
+            } catch (InterruptedException e) {
+                stopStation();
+            }
+        }
     }
 
 
     private void checkBattery() {
-        try {
-            if (batteryLevel.getValue() < 2) {
-                stopStation();
-            } else if (batteryLevel.getValue() < 20) {
-                if (sendedBatteryLow)
-                    return;
-                energySaving = true;
-                sendState();
-                sendedBatteryLow = true;
-            } else {
-                energySaving = false;
-                sendedBatteryLow = false;
+        synchronized (batteryLevel) {
+            try {
+                batteryLevel.wait();
+                if (batteryLevel.getValue() < 2) {
+                    stopStation();
+                } else if (batteryLevel.getValue() < 20) {
+                    if (sendedBatteryLow)
+                        return;
+                    energySaving = true;
+                    sendState();
+                    sendedBatteryLow = true;
+                } else {
+                    energySaving = false;
+                    sendedBatteryLow = false;
+                }
+            } catch (InterruptedException | SensorBrokenException e) {
+
             }
-        } catch (SensorBrokenException e) {
         }
     }
 
     private void stopStation() {
+        if (!running)
+            return;
+        running = false;
         closeGenerator();
-        interrupt();
+        timerSendData.cancel();
+        executor.shutdown();
         JSONObject stopMessage = new JSONObject();
         try {
             stopMessage.put("timestamp", new Timestamp(System.currentTimeMillis()));
@@ -161,46 +188,71 @@ public class Station extends Thread {
 
         }
         maintenanceServer.sendData(stopMessage);
-        running = false;
     }
 
-    public void waitDataServer() {
-        // wait() di una particolare risorsa
-        // notify()
-        if (dataServer.isWaiting())
-            sendData(true);
-    }
-
-    public void waitMaintenanceServer() {
-        if (maintenanceServer.isWaiting())
-            sendState();
-    }
-
-    @Override
-    public void run() {
-        // Fare thread diversi(pool) per ogni funzione di controllo di risorse
-        long startTime = System.currentTimeMillis();
-        long elapsedTime = 0L;
-
-        while (running) {
+    private void waitDataServer() {
+        try {
+            dataServer.waitServer();
             if (!energySaving) {
-                elapsedTime = System.currentTimeMillis();
-                if (elapsedTime - startTime >= 1 * 60 * 1000) {
+                sendData(true);
+            }
+        } catch (InterruptedException e) {
+            stopStation();
+        }
+    }
+
+    private void waitMaintenanceServer() {
+        try {
+            maintenanceServer.waitServer();
+            if (!energySaving) {
+                sendState();
+            }
+        } catch (InterruptedException e) {
+            stopStation();
+        }
+    }
+
+
+    private void startStation() {
+        int interval = 60 * 1000;
+        timerSendData.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (!energySaving) {
                     sendData(false);
-                    startTime = elapsedTime;
                 }
+            }
+        }, interval, interval);
+
+        executor.submit(() -> {
+            while (running) {
                 waitDataServer();
+            }
+        });
+        executor.submit(() -> {
+            while (running) {
                 waitMaintenanceServer();
+            }
+        });
+        executor.submit(() -> {
+            while (running) {
+                extremeWeatherConditions();
+            }
+        });
+        executor.submit(() -> {
+            while (running) {
+                checkBattery();
+            }
+        });
+        executor.submit(() -> {
+            while (running) {
                 checkAndSendErrors();
             }
-            extremeWeatherConditions();
-            checkBattery();
-        }
-        return;
+        });
     }
 
     private void openGenerator() {
-        if(isCharging())
+        if (isCharging())
             return;
         solarPanel.setOpen(true);
         windTurbine.setOpen(true);
@@ -208,7 +260,7 @@ public class Station extends Thread {
     }
 
     private void closeGenerator() {
-        if(!isCharging())
+        if (!isCharging())
             return;
         solarPanel.setOpen(false);
         windTurbine.setOpen(false);
@@ -219,7 +271,7 @@ public class Station extends Thread {
         return windTurbine.isOpen() || solarPanel.isOpen();
     }
 
-    public boolean isRunning(){
+    public boolean isRunning() {
         return running;
     }
 }

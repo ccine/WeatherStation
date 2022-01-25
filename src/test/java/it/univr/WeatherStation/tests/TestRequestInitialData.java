@@ -25,10 +25,10 @@ public class TestRequestInitialData extends BaseTest{
         assertTrue(receivedData.contains("\"humidity\":\"50%\""));
         assertTrue(receivedData.contains("\"manualRequest\":true"));
         assertTrue(receivedData.contains("\"wind\":\"0 km/h\""));
-        Date data = new Date(System.currentTimeMillis());
-        assertTrue(receivedData.contains(data.toString()));
+        Date date = new Date(System.currentTimeMillis());
+        assertTrue(receivedData.contains(date.toString()));
 
-        assertEquals(data.toString(), homePage.getStationDataTimestamp().split(" ")[0]);
+        assertEquals(date.toString(), homePage.getStationDataTimestamp().split(" ")[0]);
         assertEquals("1234", homePage.getStationDataStationID());
         assertEquals("0 km/h", homePage.getStationDataWind());
         assertEquals("19 °C", homePage.getStationDataTemperature());

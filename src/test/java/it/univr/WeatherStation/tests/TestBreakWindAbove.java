@@ -17,6 +17,7 @@ public class TestBreakWindAbove extends BaseTest {
         for(int i = 0; i < 3; i++)
             homePage.incwindButtonClick();
         homePage.getdataButtonClick();
+        driver.navigate().refresh();
         String receivedData = homePage.getTextareaDS();
         String receivedState = homePage.getTextareaMS();
         assertEquals("Unknown", homePage.getMockWind());
@@ -24,11 +25,10 @@ public class TestBreakWindAbove extends BaseTest {
         assertTrue(StringUtils.countMatches(receivedState, "}") == 2);
         assertTrue(!receivedData.contains("\"wind\""));
         receivedState = homePage.getTextareaMS().split("}")[1];
-        assertTrue(receivedState.contains("\"sensorBroken\":[\"wind\"]"));
+        assertTrue(receivedState.contains("\"sensorsBroken\":[\"wind\"]"));
 
         //RESET
-        for(int i = 0; i < 3; i++)
-            homePage.decwindButtonClick();
+        homePage.decwindButtonClick();
         assertEquals("0 km/h", homePage.getMockWind());
     }
 }

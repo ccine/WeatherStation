@@ -23,10 +23,10 @@ public class TestRequestInitialState extends BaseTest{
         assertTrue(receivedState.contains("\"isCharging\":true"));
         assertTrue(receivedState.contains("\"energySaving\":false"));
         assertTrue(receivedState.contains("\"batteryLevel\":\"30%\""));
-        Date data = new Date(System.currentTimeMillis());
-        assertTrue(receivedState.contains(data.toString()));
+        Date date = new Date(System.currentTimeMillis());
+        assertTrue(receivedState.contains(date.toString()));
 
-        assertEquals(data, homePage.getStationStateTimestamp().split(" ")[0]);
+        assertEquals(date.toString(), homePage.getStationStateTimestamp().split(" ")[0]);
         assertEquals("1234", homePage.getStationStateStationID());
         assertEquals("30%", homePage.getStationStateBatteryLevel());
         assertEquals("true", homePage.getStationStateCharging());

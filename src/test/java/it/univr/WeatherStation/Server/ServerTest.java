@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 public class ServerTest {
 
+
     @Test
     public void sendData() {
         Server s = new Server();
@@ -14,16 +15,8 @@ public class ServerTest {
         s.sendData(j);
         assertEquals(j, s.lastValue);
         assertFalse(s.getReceivedData().isEmpty());
-        assertFalse(s.isWaiting());
     }
 
-    @Test
-    public void isWaiting() {
-        Server s = new Server();
-        assertFalse(s.isWaiting());
-        s.setWaiting(true);
-        assertTrue(s.isWaiting());
-    }
 
     @Test
     public void getReceivedData() {
@@ -34,18 +27,11 @@ public class ServerTest {
     }
 
     @Test
-    public void setWaiting() {
-        Server s = new Server();
-        assertFalse(s.isWaiting());
-        s.setWaiting(true);
-        assertTrue(s.isWaiting());
-    }
-
-    @Test
     public void clearData() {
         Server s = new Server();
         s.clearData();
-        assertFalse(s.isWaiting());
+        assertEquals(0, s.lastValue.length());
         assertEquals("", s.getReceivedData());
     }
+
 }
