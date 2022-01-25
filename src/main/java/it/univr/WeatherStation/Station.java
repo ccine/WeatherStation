@@ -255,7 +255,6 @@ public class Station {
                 checkAndSendErrors();
             }
         });
-        executor.shutdown();
     }
 
     private void openGenerator() {

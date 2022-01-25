@@ -15,6 +15,7 @@ public class TestEnergySaving extends BaseTest {
         HomePO homePage = new HomePO(driver);
         homePage.decbatteryButtonClick();
         homePage.decbatteryButtonClick();
+        driver.navigate().refresh();
         String receivedState = homePage.getTextareaMS();
         String receivedData = homePage.getTextareaDS();
 

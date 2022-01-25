@@ -15,16 +15,18 @@ public class TestCheckBatteryRecover extends BaseTest{
         HomePO homePage = new HomePO(driver);
         homePage.decbatteryButtonClick();
         homePage.decbatteryButtonClick();
+        driver.navigate().refresh();
         String receivedState = homePage.getTextareaMS();
         assertTrue(StringUtils.countMatches(receivedState, "}") == 1);
         assertTrue(receivedState.contains("\"batteryLevel\":\"10%\""));
-        assertTrue(receivedState.contains("\"energySaving\":\"true\""));
+        assertTrue(receivedState.contains("\"energySaving\":true"));
         homePage.incbatteryButtonClick();
+        homePage.getstateButtonClick();
         receivedState = homePage.getTextareaMS();
         assertTrue(StringUtils.countMatches(receivedState, "}") == 2);
         receivedState = receivedState.split("}")[1];
         assertTrue(receivedState.contains("\"batteryLevel\":\"20%\""));
-        assertTrue(receivedState.contains("\"energySaving\":\"false\""));
+        assertTrue(receivedState.contains("\"energySaving\":false"));
 
         //RESET
         homePage.incbatteryButtonClick();
