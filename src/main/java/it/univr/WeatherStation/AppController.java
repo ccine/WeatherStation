@@ -25,17 +25,17 @@ public class AppController {
         try {
             model.addAttribute("battery", batteryLevel.getValue());
         } catch (SensorBrokenException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         try {
             model.addAttribute("wind", windSensor.getValue());
         } catch (SensorBrokenException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         try {
             model.addAttribute("temperature", temperatureSensor.getValue());
         } catch (SensorBrokenException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         model.addAttribute("state", maintenanceServer.getLastState());
         model.addAttribute("data", dataServer.getLastData());
@@ -107,13 +107,13 @@ public class AppController {
 
     @RequestMapping("/getdata")
     public String getdata(){
-        dataServer.setWaiting(true);
+        dataServer.setWaiting();
         return "redirect:/";
     }
 
     @RequestMapping("/getstate")
     public String getstate() {
-        maintenanceServer.setWaiting(true);
+        maintenanceServer.setWaiting();
         return "redirect:/";
     }
 

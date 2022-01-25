@@ -29,7 +29,7 @@ public class Server {
         return receivedData;
     }
 
-    public void setWaiting(boolean waiting) {
+    public void setWaiting() {
         synchronized (this){
             notify();
         }

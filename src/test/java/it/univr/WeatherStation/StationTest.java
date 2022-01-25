@@ -12,25 +12,38 @@ import static org.junit.Assert.*;
 
 public class StationTest {
 
+
     @Test
-    public void run() throws InterruptedException {
+    public void isRunning() throws InterruptedException {
         WindSensor windSensor = new WindSensor(0);
         TemperatureSensor temperatureSensor = new TemperatureSensor(19);
         Battery batteryLevel = new Battery(30);
         ServerData dataServer = new ServerData();
         ServerMaintenance maintenanceServer = new ServerMaintenance();
         Station weatherStation = new Station(1234, windSensor, temperatureSensor, new Sensor(50), new Sensor(50000), batteryLevel, dataServer, maintenanceServer);
-        dataServer.setWaiting(true);
-        maintenanceServer.setWaiting(true);
         assertTrue(weatherStation.isRunning());
-        batteryLevel.setValue(1);
-        Thread.sleep(1000);
-        assertFalse(weatherStation.isRunning());
-    }
 
-    @Test
-    public void isRunning() {
-        Station weatherStation = new Station(1234, new WindSensor(0), new TemperatureSensor(19), new Sensor(50), new Sensor(50000), new Battery(30), new ServerData(), new ServerMaintenance());
-        assertTrue(weatherStation.isRunning());
+        // Invio i dati al server
+        dataServer.setWaiting();
+        maintenanceServer.setWaiting();
+
+        // Invio dati con sensori rotti
+        windSensor.setValue(-1);
+        temperatureSensor.setValue(-50);
+        Thread.sleep(10);
+        dataServer.setWaiting();
+
+        // Extreme weather condition
+        windSensor.setValue(50);
+        Thread.sleep(10);
+        windSensor.setValue(0);
+
+
+        // Batteria sotto livello critico
+        batteryLevel.setValue(19);
+        Thread.sleep(10);
+        batteryLevel.setValue(1);
+        Thread.sleep(10); // Senza questa attesa la stazione meteo risulta nacora accesa
+        assertFalse(weatherStation.isRunning());
     }
 }

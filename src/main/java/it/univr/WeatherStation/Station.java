@@ -3,14 +3,14 @@ package it.univr.WeatherStation;
 import it.univr.WeatherStation.Sensor.Battery;
 import it.univr.WeatherStation.Sensor.Sensor;
 import it.univr.WeatherStation.Sensor.SensorBrokenException;
+import it.univr.WeatherStation.Sensor.SensorErrors;
 import it.univr.WeatherStation.Server.Server;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
@@ -29,7 +29,7 @@ public class Station {
     private boolean energySaving;
     private final Server dataServer;
     private final Server maintenanceServer;
-    private JSONObject errors;
+    private final SensorErrors errors;
     private boolean sendedBatteryLow;
 
     private boolean running = true;
@@ -50,7 +50,7 @@ public class Station {
         solarPanel = new Generator(true);
         windTurbine = new Generator(true);
         energySaving = false;
-        errors = new JSONObject();
+        errors = new SensorErrors();
         sendedBatteryLow = false;
 
         timerSendData = new Timer();
@@ -94,11 +94,8 @@ public class Station {
             }
 
             if (err.length() > 0) {
-                synchronized (errors) {
-                    errors = jsonErr;
-                    errors.put("sensorsBroken", err);
-                    errors.notify();
-                }
+                jsonErr.put("sensorsBroken", err);
+                errors.pushErrors(jsonErr);
             }
 
             json.put("manualRequest", manualRequest);
@@ -144,10 +141,7 @@ public class Station {
             try {
                 errors.wait();
                 if (!energySaving) {
-                    if (errors.length() == 0)
-                        return;
-                    maintenanceServer.sendData(errors);
-                    errors = new JSONObject();
+                    maintenanceServer.sendData(errors.popErrors());
                 }
             } catch (InterruptedException e) {
                 stopStation();
@@ -196,7 +190,7 @@ public class Station {
         maintenanceServer.sendData(stopMessage);
     }
 
-    public void waitDataServer() {
+    private void waitDataServer() {
         try {
             dataServer.waitServer();
             if (!energySaving) {
@@ -207,7 +201,7 @@ public class Station {
         }
     }
 
-    public void waitMaintenanceServer() {
+    private void waitMaintenanceServer() {
         try {
             maintenanceServer.waitServer();
             if (!energySaving) {
@@ -219,7 +213,7 @@ public class Station {
     }
 
 
-    public void startStation() {
+    private void startStation() {
         int interval = 60 * 1000;
         timerSendData.schedule(new TimerTask() {
             @Override
@@ -255,7 +249,6 @@ public class Station {
                 checkAndSendErrors();
             }
         });
-        executor.shutdown();
     }
 
     private void openGenerator() {
