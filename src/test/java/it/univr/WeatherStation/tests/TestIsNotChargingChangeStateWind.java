@@ -13,6 +13,7 @@ public class TestIsNotChargingChangeStateWind extends BaseTest{
     public void TestIsNotChargingWind(){
         HomePO homePage = new HomePO(driver);
         homePage.incwindButtonClick();
+        driver.navigate().refresh();
         String receivedState = homePage.getTextareaMS();
         assertTrue(StringUtils.countMatches(receivedState, "}") == 1);
         assertTrue(receivedState.contains("\"isCharging\":false"));

@@ -19,7 +19,6 @@ public class TestBreakTemperatureAbove extends BaseTest {
         homePage.getdataButtonClick();
         String receivedData = homePage.getTextareaDS();
         String receivedState = homePage.getTextareaMS();
-        //System.out.println(homePage.getTextareaMS());
         assertEquals("Unknown", homePage.getMockTemperature());
         assertTrue(StringUtils.countMatches(receivedData, "}") == 1);
         assertTrue(StringUtils.countMatches(receivedState, "}") == 1);
