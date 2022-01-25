@@ -165,6 +165,8 @@ public class Station extends Thread {
     }
 
     public void waitDataServer() {
+        // wait() di una particolare risorsa
+        // notify()
         if (dataServer.isWaiting())
             sendData(true);
     }
@@ -176,6 +178,7 @@ public class Station extends Thread {
 
     @Override
     public void run() {
+        // Fare thread diversi(pool) per ogni funzione di controllo di risorse
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
 
