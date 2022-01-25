@@ -12,7 +12,7 @@ public class TemperatureSensor extends Sensor{
             broken = true;
         } else {
             broken = false;
-            this.value = value;
+            super.setValue(value);
         }
 
 
