@@ -1,7 +1,7 @@
-# Progetto di Fondamenti di Ingegneria del Software
-## Realizzato da: Andrea Cinelli e Michele Quaresmini
-
 # WeatherStation
+
+### Progetto di Fondamenti di Ingegneria del Software
+*Realizzato da: Andrea Cinelli e Michele Quaresmini*
 
 ## Introduzione
 Il progetto di cui tratta questo documento riguarda la creazione di una stazione meteo che tramite dei sensori controlla le condizioni atmosferiche e le comunica ad un server per la raccolta dei dati. Un altro server (chiamato server di manutenzione) si occupa invece di gestire lo stato di tali stazioni. La stazione è inoltre dotata di alcuni generatori che permettono a quest'ultima di rimanere in funzione, caricandone la batteria.
